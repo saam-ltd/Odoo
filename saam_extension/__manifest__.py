@@ -13,6 +13,7 @@
         # 'security/ir.model.access.csv',
         'views/partner.xml',
         'views/product.xml',
+        'views/res_company.xml',
 
     ],
     'installable': True,
