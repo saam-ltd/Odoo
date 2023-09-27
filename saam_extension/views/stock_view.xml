@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- Picking View Inherit -->
+
+    <record id="view_stock_form_inherit" model="ir.ui.view">
+        <field name="name">picking.form.view.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="p_o_ref" readonly="1" attrs="{'invisible': [('p_o_ref', '=',False)]}"/>
+            </field>
+        
+        </field>
+    </record>
+
+    <!-- Picking View - Search view inherit -->
+    <record id="view_picking_internal_search_inheirt" model="ir.ui.view">
+        <field name="name">stock.picking.internal.search.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" type="inside">
+                <field name="p_o_ref"/>
+                <!-- Group By -->
+                <filter name="group_by_p_o_ref" string="Custom PO Reference" context="{'group_by': 'p_o_ref'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
