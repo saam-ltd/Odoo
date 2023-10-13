@@ -8,12 +8,15 @@
     'website': '',
     'maintainer': '',
 
-    'depends': ['base','product'],
+    'depends': ['base','product','sale_management','account', 'stock'],
     'data': [
         # 'security/ir.model.access.csv',
         'views/partner.xml',
         'views/product.xml',
         'views/res_company.xml',
+        'views/invoice_view.xml',
+        'views/sale_view.xml',
+        'views/stock_view.xml',
 
     ],
     'installable': True,
