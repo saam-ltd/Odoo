@@ -91,12 +91,12 @@
                     <tr>
                         <th name="th_sku" class="text-left">SKU</th>
                         <th name="th_description" class="text-left">DESCRIPTION</th>
-                        <th name="th_quantity" class="text-right">QTY</th>
-                        <th name="th_priceunit" class="text-right">RATE</th>
-                        <th name="th_discount" t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
+                        <th name="th_quantity" class="text-center">QTY</th>
+                        <th name="th_priceunit" class="text-center">RATE</th>
+                        <th name="th_discount" t-if="display_discount" class="text-center" groups="product.group_discount_per_so_line">
                             <span>DISC.%</span>
                         </th>
-                        <th name="th_taxes" class="text-right">TAXES</th>
+                        <th name="th_taxes" class="text-center">VAT</th>
                         <th name="th_subtotal" class="text-right">
                             <span groups="account.group_show_line_subtotals_tax_excluded">AMOUNT</span>
                             <span groups="account.group_show_line_subtotals_tax_included">TOTAL PRICE</span>

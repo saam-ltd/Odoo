@@ -59,7 +59,7 @@
                         <tr>
                             <th name="th_sku" class="text-left">SKU</th>
                             <th name="th_description"><strong>DESCRIPTION</strong></th>
-                            <th name="th_taxes"><strong>TAXES</strong></th>
+                            <th name="th_taxes"><strong>VAT</strong></th>
                             <th name="th_date_req" class="text-center"><strong>DATE REQ.</strong></th>
                             <th name="th_quantity" class="text-right"><strong>QTY</strong></th>
                             <th name="th_price_unit" class="text-right"><strong>RATE</strong></th>
