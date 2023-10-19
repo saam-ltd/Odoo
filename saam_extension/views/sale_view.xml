@@ -10,6 +10,42 @@
             <field name="payment_term_id" position="after">
                 <field name="p_o_ref" attrs="{'readonly': [('state', 'in',('sale','done','cancel'))]}"/>
             </field>
+            <field name="user_id" position="after">
+                <field name="custom_salesperson_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'readonly': [('state', 'in',('sale','done','cancel'))]}"/>
+            </field>
+            <!-- <field name="date_order" position="attributes">
+                <attribute name="attrs">{'readonly': False}</attribute>
+            </field> -->
+        </field>
+    </record>
+
+    <!-- Sale Tree View Inherit -->
+    <record id="view_order_tree_inherit" model="ir.ui.view">
+        <field name="name">sale.order.tree.view.inherit.salesperson</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="replace">
+                <field name="user_id" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="custom_salesperson_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Quotation Tree View Inherit -->
+    <record id="view_quotation_tree_with_onboarding_inherit" model="ir.ui.view">
+        <field name="name">sale.order.tree.view.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="replace">
+                <field name="user_id" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="custom_salesperson_id"/>
+            </xpath>
         </field>
     </record>
 
@@ -26,5 +62,19 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_stock_form_inherit" model="ir.ui.view">
+        <field name="name">picking.form.view.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="scheduled_date" position="attributes">
+                <attribute name="attrs">{'readonly': False}</attribute>
+            </field>
+        </field>
+    </record>
+
+
+
 
 </odoo>
