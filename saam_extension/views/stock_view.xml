@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
-    <!-- Picking View Inherit -->
-
+    <!-- Picking Form View Inherit -->
     <record id="view_stock_form_inherit" model="ir.ui.view">
         <field name="name">picking.form.view.inherit</field>
         <field name="model">stock.picking</field>
@@ -11,7 +9,21 @@
             <field name="origin" position="after">
                 <field name="p_o_ref" readonly="1" attrs="{'invisible': [('p_o_ref', '=',False)]}"/>
             </field>
-        
+            <field name="user_id" position="after">
+                <field name="custom_salesperson_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'readonly': [('state', 'in',('done','cancel'))]}"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Picking Tree View Inherit -->
+    <record id="view_stock_tree_inherit" model="ir.ui.view">
+        <field name="name">picking.tree.view.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="before">
+                <field name="custom_salesperson_id"/>
+            </xpath>
         </field>
     </record>
 
@@ -23,8 +35,10 @@
         <field name="arch" type="xml">
             <xpath expr="//search" type="inside">
                 <field name="p_o_ref"/>
+                <field name="custom_salesperson_id"/>
                 <!-- Group By -->
                 <filter name="group_by_p_o_ref" string="Custom PO Reference" context="{'group_by': 'p_o_ref'}"/>
+                <filter name="group_by_custom_salesperson_id" string="Custom Salesperson" context="{'group_by': 'custom_salesperson_id'}"/>
             </xpath>
         </field>
     </record>

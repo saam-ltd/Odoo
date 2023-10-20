@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+	<record model="ir.ui.view" id="view_custom_salesperson_form">
+        <field name="name">Custom Salesperson Form</field>
+        <field name="model">custom.salesperson</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" required='1'/>
+                            <field name="code" required='1'/>
+                            <field name="company_id" invisible='1'/>
+                        </group>
+                        <group>
+                        	<field name="active" invisible='1'/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+	<record model="ir.ui.view" id="view_custom_salesperson_tree">
+        <field name="name">Custom Salesperson Tree</field>
+        <field name="model">custom.salesperson</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_custom_salesperson_search">
+        <field name="name">Custom Salesperson search</field>
+        <field name="model">custom.salesperson</field>
+        <field name="arch" type="xml">
+        	<search>
+                <field name="name" string="Custom Salesperson"/>
+        		<filter name="filter_archived" string="Archive" domain="[('active','=',False)]"/>
+        	</search>
+        </field>
+    </record>
+
+	<record id="action_custom_salesperson_menu" model="ir.actions.act_window">
+        <field name="name">Custom Salesperson</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">custom.salesperson</field>
+        <!-- <field name="context">{'delete': 0}</field> -->
+        <field name="view_mode">tree,form</field>
+    </record>
+
+	<!-- SAMM Salesperson Menuitem -->
+	<menuitem 
+		id="custom_salesperson_menu"
+		name="Custom Salesperson"
+		parent="sale.menu_sale_config"
+		action="action_custom_salesperson_menu"
+        groups="sales_team.group_sale_manager"
+		sequence="50"/>
+</odoo>

@@ -6,7 +6,18 @@ _logger = logging.getLogger(__name__)
 class Picking(models.Model):
     _inherit = 'stock.picking'
 
+    CUSTOM_FIELD_STATES = {
+    state: [('readonly', False)]
+    for state in { 'done', 'cancel'}
+    }
+
+    # scheduled_date = fields.Datetime(string="Scheduled Date",states=CUSTOM_FIELD_STATES,copy=False, required=True,
+    #     help="Creation date of draft/sent orders,\nConfirmation date of ""confirmed orders.")
+
+    date_done = fields.Datetime(string='Effective Date',states=CUSTOM_FIELD_STATES,copy=False,
+        help="Date at which the transfer has been processed or cancelled.", track_visibility="onchange")
     p_o_ref = fields.Char(string='Custom PO Reference')
+    custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson', track_visibility="onchange")
 
     def _create_backorder(self):
         """ This method is called when the user chose to create a backorder. It will create a new
@@ -23,6 +34,7 @@ class Picking(models.Model):
                     'move_line_ids': [],
                     'backorder_id': picking.id,
                     'p_o_ref':picking.p_o_ref,
+                    'custom_salesperson_id':picking.custom_salesperson_id.id,
                 })
                 picking.message_post(
                     body=_('The backorder <a href=# data-oe-model=stock.picking data-oe-id=%d>%s</a> has been created.') % (
@@ -43,6 +55,7 @@ class StockMove(models.Model):
     def _get_new_picking_values(self):
         res = super(StockMove, self)._get_new_picking_values()
         res.update({
-            'p_o_ref': self.group_id.sale_id.p_o_ref if self.group_id.sale_id and self.group_id.sale_id.p_o_ref else False
+            'p_o_ref': self.group_id.sale_id.p_o_ref if self.group_id.sale_id and self.group_id.sale_id.p_o_ref else False,
+            'custom_salesperson_id': self.group_id.sale_id.custom_salesperson_id.id if self.group_id.sale_id and self.group_id.sale_id.custom_salesperson_id.id else ''
             })
         return res

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
-    <!-- Invoice View Inherit -->
-
+    <!-- Invoice Form View Inherit -->
     <record id="view_invoice_form_inherit" model="ir.ui.view">
         <field name="name">invoice.form.view.inherit</field>
         <field name="model">account.move</field>
@@ -11,6 +10,23 @@
             <field name="payment_reference" position="after">
                 <field name="p_o_ref" attrs="{'invisible': [('move_type', 'not in',('out_invoice','out_refund'))], 'readonly': [('state', 'in',('posted','cancel'))]}"/>
             </field>
+            <field name="invoice_user_id" position="after">
+                <field name="custom_salesperson_id" attrs="{'invisible': [('move_type', 'not in',('out_invoice','out_refund'))], 'readonly': [('state', 'in',('posted','cancel'))]}" options="{'no_create': True, 'no_edit': True, 'no_open': True}" />
+                <!-- 'readonly': [('state', 'in',('posted','cancel'))] -->
+            </field>
+
+        </field>
+    </record>
+
+    <!-- Invoice Tree View Inherit -->
+    <record id="view_out_invoice_tree_inherit" model="ir.ui.view">
+        <field name="name">account.move.tree.view.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_out_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_state']" position="before">
+                <field name="custom_salesperson_id"/>
+            </xpath>
         </field>
     </record>
 
@@ -22,8 +38,10 @@
         <field name="arch" type="xml">
             <xpath expr="//search" type="inside">
                 <field name="p_o_ref"/>
+                <field name="custom_salesperson_id"/>
                 <!-- Group By -->
                 <filter name="group_by_p_o_ref" string="Custom PO Reference" context="{'group_by': 'p_o_ref'}"/>
+                <filter name="group_by_custom_salesperson_id" string="Custom Salesperson" context="{'group_by': 'custom_salesperson_id'}"/>
             </xpath>
         </field>
     </record>
