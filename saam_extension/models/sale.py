@@ -12,7 +12,7 @@ class SaleOrder(models.Model):
         state: [('readonly', False)]
         for state in {'sale', 'done', 'cancel'}
     }
-    date_order = fields.Datetime(string="Order Date",states=CUSTOM_FIELD_STATES,copy=False, required=True, track_visibility="onchange")
+    date_order = fields.Datetime(string="Order Date",states=CUSTOM_FIELD_STATES,copy=False, track_visibility="onchange")
 
     p_o_ref = fields.Char(string='Custom PO Reference')
     custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson', track_visibility="onchange")
