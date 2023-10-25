@@ -62,7 +62,7 @@
                             <strong>REFERENCE:</strong>
                             <p class="m-0" t-field="o.ref"/>
                         </div>
-                        <div class="col-auto col-3 mw-100 mb-2"  name="div_salesman" >
+                        <div t-if="o.move_type == 'out_invoice' or o.move_type == 'out_refund'" class="col-auto col-3 mw-100 mb-2"  name="div_salesman" >
                             <strong>SALESMAN:</strong>
                             <!-- <p t-field="o.user_id.name"/> -->
                             <p t-field="o.custom_salesperson_id.name"/>
