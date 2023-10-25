@@ -15,3 +15,7 @@ class AccountMove(models.Model):
     p_o_ref = fields.Char(string='Custom PO Reference')
     custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson', track_visibility="onchange")
     
+class AccountMoveLine(models.Model):
+    _inherit = "account.move.line"
+
+    bill_item_code = fields.Char(string='Item Code',copy=False)
