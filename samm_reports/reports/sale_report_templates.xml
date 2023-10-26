@@ -72,9 +72,10 @@
                     <strong>EXPIRATION:</strong>
                     <span t-field="doc.validity_date"/>
                 </div> -->
-                <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2">
+                <div class="col-auto col-3 mw-100 mb-2">
                     <strong>SALESMAN: </strong>
-                    <span t-field="doc.user_id.name"/>
+                    <!-- <span t-field="doc.user_id.name"/> -->
+                    <span t-field="doc.custom_salesperson_id.name"/>
                 </div>
                 <div t-if="doc.payment_term_id.name" class="col-auto col-3 mw-100 mb-2">
                     <strong>PAYMENT TERMS: </strong>

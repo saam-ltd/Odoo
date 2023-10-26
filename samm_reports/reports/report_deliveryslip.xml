@@ -65,9 +65,10 @@
                                         <span t-field="o.scheduled_date" t-options='{"widget": "date"}'/>
                                    </t>
                                 </div>
-                                <div t-if="o.user_id.name" class="col-auto" name="div_salesman" >
+                                <div class="col-auto" name="div_salesman" >
                                     <strong>SALESMAN:</strong>
-                                    <span t-field="o.user_id.name"/>
+                                    <!-- <span t-field="o.user_id.name"/> -->
+                                    <span t-field="o.custom_salesperson_id.name"/>
                                 </div>
                             </div>
                             <br/>
