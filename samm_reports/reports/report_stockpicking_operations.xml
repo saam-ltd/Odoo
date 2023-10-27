@@ -111,8 +111,8 @@
                                                 <!-- <span t-field="ml.product_id.description_picking"/> -->
                                             </td>
                                             <td>
-                                                <span t-if="o.state != 'done'" t-field="ml.product_uom_qty" t-options='{"widget": "float", "precision": 0}'/>
-                                                <span t-if="o.state == 'done'" t-field="ml.qty_done" t-options='{"widget": "float", "precision": 0}'/>
+                                                <span t-if="o.state != 'done'" t-field="ml.product_uom_qty" t-options='{"widget": "float", "precision": 2}'/>
+                                                <span t-if="o.state == 'done'" t-field="ml.qty_done" t-options='{"widget": "float", "precision": 2}'/>
                                                 <span t-field="ml.product_uom_id" groups="uom.group_uom"/>
                                             </td>
                                             <td t-if="o.picking_type_id.code != 'incoming'" groups="stock.group_stock_multi_locations">

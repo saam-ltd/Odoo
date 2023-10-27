@@ -353,12 +353,14 @@
                 </p>
             </td>
             <td class="text-center" name="move_line_aggregated_qty_ordered">
-                <span t-esc="int(aggregated_lines[line]['qty_ordered'])"/>
+                <!-- <span t-esc="int(aggregated_lines[line]['qty_ordered'])"/> -->
+                <span t-esc="'%.2f' % aggregated_lines[line]['qty_ordered']"/>
                 <span t-esc="aggregated_lines[line]['product_uom']"/>
             </td>
             <td class="text-center" name="move_line_aggregated_qty_done">
                 <t t-if="aggregated_lines[line]['qty_done']">
-                    <span t-esc="int(aggregated_lines[line]['qty_done'])"/>
+                    <!-- <span t-esc="int(aggregated_lines[line]['qty_done']) " /> -->
+                    <span t-esc="'%.2f' % aggregated_lines[line]['qty_done']"/>
                     <span t-esc="aggregated_lines[line]['product_uom']"/>
                 </t>
             </td>
