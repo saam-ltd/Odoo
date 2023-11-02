@@ -19,6 +19,8 @@ class Picking(models.Model):
     p_o_ref = fields.Char(string='Custom PO Reference')
     custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson', track_visibility="onchange")
 
+    is_date_updated = fields.Boolean(string='Is Date Updated')
+
     def _create_backorder(self):
         """ This method is called when the user chose to create a backorder. It will create a new
         picking, the backorder, and move the stock.moves that are not `done` or `cancel` into it.
@@ -48,6 +50,96 @@ class Picking(models.Model):
         if bo_to_assign:
             bo_to_assign.action_assign()
         return backorders
+
+    # def action_change_date(self):
+    #     count=0
+    #     for i in self.search([('picking_type_id.code','=','outgoing'),('is_date_updated','=',False)]):
+    #         count+=1
+    #         _logger.info("count ==============================================> " + str(count))
+    #         for move in i.move_ids_without_package:
+    #             move.date = i.date_done
+    #             move.date_deadline = i.date_done
+
+    #             update_sql = """UPDATE stock_move SET create_date = %s WHERE id = %s"""
+    #             formatted_string = i.date_done.strftime("%Y-%m-%d %H:%M:%S")
+    #             self.env.cr.execute(update_sql, (formatted_string,move.id,))
+
+    #             for journal_entry in move.account_move_ids:
+    #                 if journal_entry.state == 'posted':
+    #                     journal_entry.button_draft()
+    #                     journal_entry.name = ''
+    #                     journal_entry.date = i.date_done
+
+
+    #                     update_sql = """UPDATE account_move SET create_date = %s WHERE id = %s"""
+    #                     formatted_string = i.date_done.strftime("%Y-%m-%d %H:%M:%S")
+    #                     self.env.cr.execute(update_sql, (formatted_string,journal_entry.id,))
+
+
+    #                     for journal_items in journal_entry.line_ids:
+    #                         # journal_items.date = i.date_done
+
+    #                         update_sql = """UPDATE account_move_line SET create_date = %s WHERE id = %s"""
+    #                         formatted_string = i.date_done.strftime("%Y-%m-%d %H:%M:%S")
+    #                         self.env.cr.execute(update_sql, (formatted_string,journal_items.id,))
+
+    #                     journal_entry.action_post()
+
+    #             for stock_layer in move.stock_valuation_layer_ids:
+    #                 update_sql = """UPDATE stock_valuation_layer SET create_date = %s WHERE id = %s"""
+    #                 formatted_string = i.date_done.strftime("%Y-%m-%d %H:%M:%S")
+    #                 self.env.cr.execute(update_sql, (formatted_string,stock_layer.id,))
+
+    #         for moveline in i.move_line_ids_without_package:
+    #             moveline.date = i.date_done
+
+    #             update_sql = """UPDATE stock_move_line SET create_date = %s WHERE id = %s"""
+    #             formatted_string = i.date_done.strftime("%Y-%m-%d %H:%M:%S")
+    #             self.env.cr.execute(update_sql, (formatted_string,moveline.id,))
+
+    #         i.is_date_updated = True
+    #         self.env.cr.commit()
+
+    # def action_change_inventory_dates(self): 
+    #     count=0
+    #     for move in self.env['stock.move'].search([('name','=','Inventory Adjustment - 2023-10-21')]):
+    #         count+=1
+    #         _logger.info("count ==============================================> " + str(count))
+    #         move.date = '2023-07-01 00:00:00'
+
+    #         update_sql = """UPDATE stock_move SET create_date ='2023-07-01 00:00:00' WHERE id = %s"""
+
+    #         self.env.cr.execute(update_sql, (move.id,))
+
+
+
+    # def action_change_inventory_dates_product_move(self): 
+    #     count=0
+    #     for move_line in self.env['stock.move.line'].search([('reference','=','Inventory Adjustment - 2023-10-21')]):
+    #         count+=1
+    #         _logger.info("count ==============================================> " + str(count))
+    #         move_line.date = '2023-07-01 00:00:00'
+
+    #         update_sql = """UPDATE stock_move_line SET create_date ='2023-07-01 00:00:00' WHERE id = %s"""
+
+    #         self.env.cr.execute(update_sql, (move_line.id,))
+
+    # def action_change_inventory_stock_value(self): 
+    #     count=0
+    #     for layer in self.env['stock.valuation.layer'].search([('create_date','>','2023-10-21 00:00:00'),('create_date','<','2023-10-21 23:59:00')]):
+    #         count+=1
+    #         _logger.info("count ==============================================> " + str(count))
+    #         update_sql = """UPDATE stock_valuation_layer SET create_date = '2023-07-01 00:00:00' WHERE id = %s"""
+    #         self.env.cr.execute(update_sql, (layer.id,))
+
+    # def update_inventory_valuation_journal_entry(self):
+    #     count=0
+    #     for entry in self.env['account.move'].search([('journal_id','=',6),('create_date','>','2023-10-01 00:00:00'),('create_date','<','2023-10-31 23:59:59')]):
+    #         count+=1
+    #         _logger.info("count ==============================================> " + str(count))
+    #         update_sql = """UPDATE account_move SET create_date = '2023-07-01 00:00:00' WHERE id = %s"""
+    #         self.env.cr.execute(update_sql, (entry.id,))
+
 
 class StockMove(models.Model):
     _inherit = "stock.move"
