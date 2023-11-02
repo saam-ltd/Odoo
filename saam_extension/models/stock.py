@@ -6,16 +6,16 @@ _logger = logging.getLogger(__name__)
 class Picking(models.Model):
     _inherit = 'stock.picking'
 
-    CUSTOM_FIELD_STATES = {
-    state: [('readonly', False)]
-    for state in { 'done', 'cancel'}
-    }
+    # CUSTOM_FIELD_STATES = {
+    # state: [('readonly', False)]
+    # for state in { 'done', 'cancel'}
+    # }
 
     # scheduled_date = fields.Datetime(string="Scheduled Date",states=CUSTOM_FIELD_STATES,copy=False, required=True,
     #     help="Creation date of draft/sent orders,\nConfirmation date of ""confirmed orders.")
 
-    date_done = fields.Datetime(string='Effective Date',states=CUSTOM_FIELD_STATES,copy=False,
-        help="Date at which the transfer has been processed or cancelled.", track_visibility="onchange")
+    # date_done = fields.Datetime(string='Effective Date',states=CUSTOM_FIELD_STATES,copy=False,
+    #     help="Date at which the transfer has been processed or cancelled.", track_visibility="onchange")
     p_o_ref = fields.Char(string='Custom PO Reference')
     custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson', track_visibility="onchange")
 
