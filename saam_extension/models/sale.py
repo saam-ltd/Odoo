@@ -22,3 +22,8 @@ class SaleOrder(models.Model):
         invoice_vals['p_o_ref'] = self.p_o_ref
         invoice_vals['custom_salesperson_id'] = self.custom_salesperson_id.id 
         return invoice_vals
+
+    @api.onchange('partner_id')
+    def onchange_partner_id_custom_sales_person(self): 
+        if self.partner_id: 
+            self.custom_salesperson_id = self.partner_id.custom_salesperson_id.id if self.partner_id.custom_salesperson_id else False
