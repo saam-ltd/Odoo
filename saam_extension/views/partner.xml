@@ -10,7 +10,7 @@
         <field name="arch" type="xml">
             <field name="vat" position="after">
                 <field name="brn"/>
-                <field name="contact_sale_person"/>
+                <field name="custom_salesperson_id"/>
                 <field name="gl_code"/>
                 <field name="is_cus" invisible="1"/>
             </field>
