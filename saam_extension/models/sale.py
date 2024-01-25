@@ -16,9 +16,9 @@ class SaleOrder(models.Model):
     
     date_order = fields.Datetime(string="Order Date",states=CUSTOM_FIELD_STATES,copy=False, track_visibility="onchange")
     p_o_ref = fields.Char(string='Custom PO Reference')
-    custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson', track_visibility="onchange")
-    logistic_duration_id =  fields.Many2one('customer.logistic.timing',string='Logistic Timing',related='partner_id.customer_logistic_id',track_visibility="onchange",copy=False)
-    customer_remarks =  fields.Text(string='Customer Remarks',related='partner_id.cus_remarks',track_visibility="onchange",copy=False)
+    custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson.', tracking=2)
+    logistic_duration_id =  fields.Many2one('customer.logistic.timing',string='Logistic Timing',related='partner_id.customer_logistic_id',tracking=2,copy=False)
+    customer_remarks =  fields.Text(string='Customer Remarks',related='partner_id.cus_remarks', tracking=2,copy=False)
 
     def _prepare_invoice(self):
         invoice_vals = super(SaleOrder, self)._prepare_invoice()
