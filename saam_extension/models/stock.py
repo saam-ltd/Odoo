@@ -18,6 +18,9 @@ class Picking(models.Model):
     #     help="Date at which the transfer has been processed or cancelled.", track_visibility="onchange")
     p_o_ref = fields.Char(string='Custom PO Reference')
     custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson', track_visibility="onchange")
+    logistic_duration_id =  fields.Many2one('customer.logistic.timing',string='Logistic Timing',related='partner_id.customer_logistic_id',tracking=2,copy=False)
+    customer_category_id =  fields.Many2one('customer.catgeory',string='Customer Category',related='partner_id.customer_category_id',tracking=2,copy=False)
+    customer_remarks =  fields.Text(string='Customer Remarks',related='partner_id.cus_remarks', tracking=2,copy=False)
 
     is_date_updated = fields.Boolean(string='Is Date Updated')
 
@@ -37,6 +40,9 @@ class Picking(models.Model):
                     'backorder_id': picking.id,
                     'p_o_ref':picking.p_o_ref,
                     'custom_salesperson_id':picking.custom_salesperson_id.id,
+                    'logistic_duration_id':picking.logistic_duration_id.id,
+                    'customer_category_id':picking.customer_category_id.id,
+                    'customer_remarks':picking.customer_remarks,
                 })
                 picking.message_post(
                     body=_('The backorder <a href=# data-oe-model=stock.picking data-oe-id=%d>%s</a> has been created.') % (
@@ -148,6 +154,9 @@ class StockMove(models.Model):
         res = super(StockMove, self)._get_new_picking_values()
         res.update({
             'p_o_ref': self.group_id.sale_id.p_o_ref if self.group_id.sale_id and self.group_id.sale_id.p_o_ref else False,
-            'custom_salesperson_id': self.group_id.sale_id.custom_salesperson_id.id if self.group_id.sale_id and self.group_id.sale_id.custom_salesperson_id.id else ''
+            'custom_salesperson_id': self.group_id.sale_id.custom_salesperson_id.id if self.group_id.sale_id and self.group_id.sale_id.custom_salesperson_id.id else '',
+            'logistic_duration_id': self.group_id.sale_id.logistic_duration_id.id if self.group_id.sale_id and self.group_id.sale_id.logistic_duration_id.id else '',
+            'customer_category_id': self.group_id.sale_id.customer_category_id.id if self.group_id.sale_id and self.group_id.sale_id.customer_category_id.id else '',
+            'customer_remarks': self.group_id.sale_id.customer_remarks if self.group_id.sale_id and self.group_id.sale_id.customer_remarks else False
             })
         return res

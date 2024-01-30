@@ -22,6 +22,9 @@
             </field>
             <field name="user_id" position="after">
                 <field name="custom_salesperson_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'readonly': [('state', 'in',('done','cancel'))]}"/>
+                <field name="logistic_duration_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'readonly': [('state', 'in',('done','cancel'))]}"/>
+                <field name="customer_category_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'readonly': [('state', 'in',('done','cancel'))]}"/>
+                <field name="customer_remarks" attrs="{'readonly': [('state', 'in',('done','cancel'))]}"/>
             </field>
         </field>
     </record>
@@ -47,6 +50,9 @@
             <xpath expr="//search" type="inside">
                 <field name="p_o_ref"/>
                 <field name="custom_salesperson_id"/>
+                <field name="logistic_duration_id"/>
+                <field name="customer_category_id"/>
+                <field name="customer_remarks"/>
                 <!-- Group By -->
                 <filter name="group_by_p_o_ref" string="Custom PO Reference" context="{'group_by': 'p_o_ref'}"/>
                 <filter name="group_by_custom_salesperson_id" string="Custom Salesperson" context="{'group_by': 'custom_salesperson_id'}"/>

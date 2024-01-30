@@ -13,6 +13,9 @@
             <field name="invoice_user_id" position="after">
                 <field name="custom_salesperson_id" attrs="{'invisible': [('move_type', 'not in',('out_invoice','out_refund'))], 'readonly': [('state', 'in',('posted','cancel'))]}" options="{'no_create': True, 'no_edit': True, 'no_open': True}" />
                 <!-- 'readonly': [('state', 'in',('posted','cancel'))] -->
+                <field name="logistic_duration_id" attrs="{'invisible': [('move_type', 'not in',('out_invoice','out_refund'))], 'readonly': [('state', 'in',('posted','cancel'))]}" options="{'no_create': True, 'no_edit': True, 'no_open': True}" />
+                <field name="customer_category_id" attrs="{'invisible': [('move_type', 'not in',('out_invoice','out_refund'))], 'readonly': [('state', 'in',('posted','cancel'))]}" options="{'no_create': True, 'no_edit': True, 'no_open': True}" />
+                <field name="customer_remarks" attrs="{'invisible': [('move_type', 'not in',('out_invoice','out_refund'))], 'readonly': [('state', 'in',('posted','cancel'))]}"/>
             </field>
 
             <xpath expr="//notebook/page[1]/field/tree/field[@name='product_id']" position="after">

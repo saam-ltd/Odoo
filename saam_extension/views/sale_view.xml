@@ -10,6 +10,7 @@
             <field name="payment_term_id" position="after">
                 <field name="p_o_ref" attrs="{'readonly': [('state', 'in',('sale','done','cancel'))]}"/>
                 <field name="logistic_duration_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" readonly="1"/>
+                <field name="customer_category_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" readonly="1"/>
                 <field name="customer_remarks" readonly="1"/>
             </field>
             <field name="user_id" position="after">

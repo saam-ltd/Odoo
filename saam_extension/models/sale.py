@@ -18,12 +18,16 @@ class SaleOrder(models.Model):
     p_o_ref = fields.Char(string='Custom PO Reference')
     custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson.', tracking=2)
     logistic_duration_id =  fields.Many2one('customer.logistic.timing',string='Logistic Timing',related='partner_id.customer_logistic_id',tracking=2,copy=False)
+    customer_category_id =  fields.Many2one('customer.catgeory',string='Customer Category',related='partner_id.customer_category_id',tracking=2,copy=False)
     customer_remarks =  fields.Text(string='Customer Remarks',related='partner_id.cus_remarks', tracking=2,copy=False)
 
     def _prepare_invoice(self):
         invoice_vals = super(SaleOrder, self)._prepare_invoice()
         invoice_vals['p_o_ref'] = self.p_o_ref
         invoice_vals['custom_salesperson_id'] = self.custom_salesperson_id.id 
+        invoice_vals['logistic_duration_id'] = self.logistic_duration_id.id 
+        invoice_vals['customer_category_id'] = self.customer_category_id.id 
+        invoice_vals['customer_remarks'] = self.customer_remarks
         return invoice_vals
 
     @api.onchange('partner_id')
