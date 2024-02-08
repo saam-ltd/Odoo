@@ -10,15 +10,20 @@
 
     'depends': ['base','product','sale_management','account', 'stock', 'sale'],
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
+        'data/sequence.xml',
         'views/custom_salesperson.xml',
+        'views/target_flow.xml',
         'views/partner.xml',
         'views/product.xml',
         'views/res_company.xml',
         'views/invoice_view.xml',
         'views/sale_view.xml',
         'views/stock_view.xml',
+        'views/schedule_planning.xml',
     ],
+    
     'installable': True,
     'auto_install': False,
     'price': 110.00,

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="seq_target_flow" model="ir.sequence">
+            <field name="name">Target Flow Sequence</field>
+            <field name="code">target.flow.seq</field>
+            <field name="prefix">TAR-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

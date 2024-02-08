@@ -14,9 +14,21 @@
                             <field name="company_id" invisible='1'/>
                         </group>
                         <group>
+                            <field name="manager_id" required='1' options="{'no_create': True, 'no_edit': True, 'no_open': True}" />
+                            <field name="linked_user_id" required='1' options="{'no_create': True, 'no_edit': True, 'no_open': True}" />
                         	<field name="active" invisible='1'/>
                         </group>
                     </group>
+                    <notebook>
+                        <page string="Activity Lines" name="activity_lines">
+                            <field name="activity_lines" >
+                                <tree string="Activity Lines" editable="bottom">
+                                    <field name="dayofweek" />
+                                    <field name="customer_ids"  widget="many2many_tags"/> 
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="activity_ids"/>
@@ -32,6 +44,8 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
+                <field name="manager_id"/>
+                <field name="linked_user_id"/>
             </tree>
         </field>
     </record>
@@ -42,6 +56,8 @@
         <field name="arch" type="xml">
         	<search>
                 <field name="name" string="Custom Salesperson"/>
+                <field name="manager_id" string="Manager"/>
+                <field name="linked_user_id" string="Linked User"/>
         		<filter name="filter_archived" string="Archive" domain="[('active','=',False)]"/>
         	</search>
         </field>

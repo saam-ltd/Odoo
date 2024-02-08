@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<!-- Groups -->
+	 <record model="ir.module.category" id="module_target_flow">
+        <field name="name">Target Tracking</field>
+        <field name="sequence">2</field>
+    </record>
+
+    <record id="group_target_flow_user" model="res.groups">
+        <field name="name">Users: Own Document</field>
+        <field name="category_id" ref="module_target_flow"/>
+    </record>
+    <record id="group_target_flow_manager" model="res.groups">
+        <field name="name">Users: All Document</field>
+        <field name="category_id" ref="module_target_flow"/>
+    </record>
+    <record id="group_target_flow_admin" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="category_id" ref="module_target_flow"/>
+    </record>
+
+    <!-- Record Rules -->
+    <record id="target_flow_user_rules" model="ir.rule">
+        <field name="name">Target Tracking User rules</field>
+        <field name="model_id" ref="saam_extension.model_target_flow"/>
+        <field name="domain_force">[('linked_user_id','=',user.id),('state','=','confirm')]</field>
+        <field name="groups" eval="[(4, ref('group_target_flow_user'))]"/> 
+    </record>
+
+    <record id="target_flow_manager_rules" model="ir.rule">
+        <field name="name">Target Tracking Manager rules</field>
+        <field name="model_id" ref="saam_extension.model_target_flow"/>
+        <field name="domain_force">['|',('create_uid','=',user.id),('manager_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_target_flow_manager'))]"/>
+    </record>
+
+    <record id="target_flow_admin_rules" model="ir.rule">
+        <field name="name">Target Tracking Admin rules</field>
+        <field name="model_id" ref="saam_extension.model_target_flow"/>
+        <field name="domain_force">[]</field>
+        <field name="groups" eval="[(4, ref('group_target_flow_admin'))]"/>
+    </record>
+</odoo>

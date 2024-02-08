@@ -17,6 +17,24 @@
                 <field name="customer_logistic_id" attrs="{'invisible': [('is_cus', '=',False)]}"/>
                 <field name="cus_remarks" attrs="{'invisible': [('is_cus', '=',False)]}"/>
             </field>
+            <xpath expr="//notebook/page[@name='internal_notes']" position="after">
+                <page string="Customer Target Tracking" name="cus_tracking_lines">
+                    <field name="customer_target_tracking_lines">
+                        <tree string="Customer Target Tracking" editable="top">
+                            <field name="custom_salesperson_id" optional="hide"/>
+                            <field name="create_date" optional="hide"/>
+                            <field name="write_date" optional="hide"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="currency_id" invisible="1"/>                                    
+                            <field name="customer_target_amt" sum="Target Amount"/>
+                            <field name="customer_achieved_amt" sum="Achieved Amount"/>
+                            <button type="object" name="action_open_cus_achieved_entries" string="View"
+                                icon="fa-arrow-circle-o-right" />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
         </field>
     </record>
 
