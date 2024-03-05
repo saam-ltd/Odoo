@@ -214,21 +214,20 @@
 		</field>
 	</record>
 
-	<record id="action_target_flow_menu" model="ir.actions.act_window">
+	<!-- <record id="action_target_flow_menu" model="ir.actions.act_window">
 		<field name="name">Target Tracking</field>
 		<field name="type">ir.actions.act_window</field>
 		<field name="res_model">target.flow</field>
-		<!-- <field name="context">{'delete': 0}</field> -->
 		<field name="view_mode">tree,form</field>
 	</record>
-
+ -->
 	<!-- SAMM Salesperson Menuitem -->
-	<menuitem 
+	<!-- <menuitem 
 		id="target_flow_menu"
 		name="Target Tracking"
 		parent="sale.sale_order_menu"
 		action="action_target_flow_menu"
 		groups="saam_extension.group_target_flow_user,saam_extension.group_target_flow_manager,saam_extension.group_target_flow_admin"
-		sequence="5"/>
+		sequence="5"/> -->
 
 </odoo>

@@ -14,10 +14,10 @@
                 <field name="gl_code"/>
                 <field name="is_cus" invisible="1"/>
                 <field name="customer_category_id" attrs="{'invisible': [('is_cus', '=',False)]}"/>
-                <field name="customer_logistic_id" attrs="{'invisible': [('is_cus', '=',False)]}"/>
+                <!-- <field name="customer_logistic_id" attrs="{'invisible': [('is_cus', '=',False)]}"/> -->
                 <field name="cus_remarks" attrs="{'invisible': [('is_cus', '=',False)]}"/>
             </field>
-            <xpath expr="//notebook/page[@name='internal_notes']" position="after">
+            <!-- <xpath expr="//notebook/page[@name='internal_notes']" position="after">
                 <page string="Customer Target Tracking" name="cus_tracking_lines">
                     <field name="customer_target_tracking_lines">
                         <tree string="Customer Target Tracking" editable="top">
@@ -34,7 +34,7 @@
                         </tree>
                     </field>
                 </page>
-            </xpath>
+            </xpath> -->
         </field>
     </record>
 
@@ -108,7 +108,7 @@
         sequence="50"/>
 
 
-        <record model="ir.ui.view" id="customer_logistic_form">
+        <!-- <record model="ir.ui.view" id="customer_logistic_form">
         <field name="name">Customer Logistic Timing Form</field>
         <field name="model">customer.logistic.timing</field>
         <field name="arch" type="xml">
@@ -146,18 +146,17 @@
         <field name="name">Customer Logistic Timing</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">customer.logistic.timing</field>
-        <!-- <field name="context">{'delete': 0}</field> -->
         <field name="view_mode">tree,form</field>
-    </record>
+    </record> -->
 
     <!-- Samm Customer -->
 
-    <menuitem 
+    <!-- <menuitem 
         id="customer_logistic_timing"
         name="Customer Logistic Timing"
         parent="sale.menu_sale_config"
         action="action_customer_logistic_timing"
-        sequence="50"/>
+        sequence="50"/> -->
 
 
 </odoo>
