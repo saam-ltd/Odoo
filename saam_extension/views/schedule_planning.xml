@@ -259,7 +259,7 @@
 
 	<!-- Menu Details -->
 
-     <menuitem 
+     <!-- <menuitem 
         id="main_menu_route_plan"
         name="Route Plan" 
         sequence="20"
@@ -276,5 +276,5 @@
 
     <menuitem id="done_activities_menu" name="Done Activities" parent="menu_schedule_planning_parent_id" sequence="3" 
     	action="mail_activity_action_inherit_done"/>
-
+ -->
 </odoo>
