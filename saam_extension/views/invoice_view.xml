@@ -78,14 +78,13 @@
         </field>
     </record>
 
-    <record id="action_account_move_line_menu" model="ir.actions.act_window">
+    <!-- <record id="action_account_move_line_menu" model="ir.actions.act_window">
         <field name="name">SKU Analysis</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">account.move.line</field>
         <field name="view_id" ref="view_account_move_line_inherit_sku"/>
         <field name="view_mode">tree</field>
-        <field name="domain">[('move_id.move_type', 'in', ('out_invoice','out_refund')),('move_id.state','not in', ('draft','posted','cancel'))]</field>
-        <!-- <field name="domain">[('move_id.move_type', 'in', ('out_invoice','out_refund')),('move_id.state','=', 'posted')]</field> -->
+        <field name="domain">[('move_id.move_type', 'in', ('out_invoice','out_refund')),('move_id.state','=', 'posted')]</field>
     </record>
 
     <menuitem 
@@ -93,5 +92,5 @@
         name="SKU Analysis"
         parent="sale.menu_sale_invoicing"
         action="action_account_move_line_menu"
-        sequence="6"/>
+        sequence="6"/> -->
 </odoo>
