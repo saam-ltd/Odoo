@@ -15,7 +15,7 @@
             </field>
             <field name="user_id" position="after">
                 <field name="custom_salesperson_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'readonly': [('state', 'in',('sale','done','cancel'))]}"/>
-                <field name="is_accessed_sp"/>
+                <field name="is_accessed_sp" invisible="1"/>
             </field>
             <xpath expr="//notebook/page[1]/field/tree/field[@name='name']" position="after">
                 <field name="prod_boxes" attrs="{'readonly': [('state', 'in',('sale','done','cancel'))]}"/>
