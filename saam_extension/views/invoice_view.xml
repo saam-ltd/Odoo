@@ -22,6 +22,10 @@
                <field name="bill_item_code" attrs="{'column_invisible': [('parent.move_type', 'not in',['in_invoice','in_refund','in_receipt'])],'readonly': [('parent.state', '!=','draft')]}"/>
             </xpath>
 
+            <xpath expr="//notebook/page[1]/field/tree/field[@name='name']" position="after">
+                <field name="prod_boxes"  attrs="{'column_invisible': [('parent.move_type', 'not in',['out_invoice','out_refund'])],'readonly': [('parent.state', '!=','draft')]}"/>
+            </xpath>
+
             <xpath expr="//notebook/page[2]/field/tree/field[@name='account_id']" position="after">
                <field name="bill_item_code" invisible="1"/>
             </xpath>
