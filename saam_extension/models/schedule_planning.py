@@ -3,10 +3,10 @@ from odoo.exceptions import UserError, AccessError,ValidationError
 from datetime import *
 
 
-class SchedulePlanning(models.Model):
-	_name = "schedule.planning"
-	_description = "Schedule Planning"
-	_inherit = ['mail.thread', 'mail.activity.mixin']
+# class SchedulePlanning(models.Model):
+# 	_name = "schedule.planning"
+# 	_description = "Schedule Planning"
+# 	_inherit = ['mail.thread', 'mail.activity.mixin']
 	# _order = 'id desc'
 
 	# name = fields.Char(string="Name", copy=False, default='New')
@@ -117,7 +117,7 @@ class SchedulePlanningLines(models.Model):
 	_name = 'schedule.planning.line'
 	_description = "Schedule Planning Line"
 
-	schedule_id = fields.Many2one('schedule.planning', 'Schedule Planning')
+	# schedule_id = fields.Many2one('schedule.planning', 'Schedule Planning')
 	date = fields.Date(string="Date")
 	dayofweek = fields.Selection([
 		('0', 'Monday'),
