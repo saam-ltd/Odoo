@@ -2,9 +2,5 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_custom_salesperson,custom.salesperson,model_custom_salesperson,,1,1,1,1
 access_custom_salesperson_activity_line,custom.salesperson.activity.line,model_custom_salesperson_activity_line,,1,1,1,1
 access_customer_category,customer.category,model_customer_catgeory,,1,1,1,1
-access_target_flow_user,target.flow.user,model_target_flow,saam_extension.group_target_flow_user,1,0,0,0
-access_target_flow_manager,target.flow.manager,model_target_flow,saam_extension.group_target_flow_manager,1,1,1,1
-access_target_flow_admin,target.flow.admin,model_target_flow,saam_extension.group_target_flow_admin,1,1,1,1
 access_target_tracking_lines,target.tracking.lines,model_target_tracking_lines,,1,1,1,1
 access_target_tracking_lines_week,target.tracking.lines.week,model_target_tracking_lines_week,,1,1,1,1
-access_customer_target_tracking_lines,customer.target.tracking.lines,model_customer_target_tracking_lines,,1,1,1,0
