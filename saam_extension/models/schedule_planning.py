@@ -113,9 +113,9 @@ from datetime import *
 	# def action_schedule_draft(self):
 	# 	self.write({"state": "draft"})
 	
-class SchedulePlanningLines(models.Model):
-	_name = 'schedule.planning.line'
-	_description = "Schedule Planning Line"
+# class SchedulePlanningLines(models.Model):
+# 	_name = 'schedule.planning.line'
+# 	_description = "Schedule Planning Line"
 
 	# schedule_id = fields.Many2one('schedule.planning', 'Schedule Planning')
 	# date = fields.Date(string="Date")
@@ -198,12 +198,12 @@ class SchedulePlanningLines(models.Model):
 # 	# 	print("end_time-----------------------------",self.end_time)
 
 
-	def action_timer_stop(self):
-		self.write({'activity_state': 'stopped', 'end_time': fields.Datetime.now()})
+	# def action_timer_stop(self):
+	# 	self.write({'activity_state': 'stopped', 'end_time': fields.Datetime.now()})
 
 
-	def action_mark_done(self):
-		self.activity_state = 'done'
+	# def action_mark_done(self):
+	# 	self.activity_state = 'done'
 
-	def action_mark_cancel(self):
-		self.activity_state = 'cancel'
+	# def action_mark_cancel(self):
+	# 	self.activity_state = 'cancel'
