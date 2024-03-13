@@ -9,11 +9,11 @@ from datetime import datetime, timedelta
 
 _logger = logging.getLogger(__name__)
 
-class TargetFlow(models.Model):
-	_name = 'target.flow'
-	_description ='Target Tracking'
-	_inherit = ['portal.mixin','mail.thread', 'mail.activity.mixin']
-	_order = 'id desc'
+# class TargetFlow(models.Model):
+# 	_name = 'target.flow'
+# 	_description ='Target Tracking'
+# 	_inherit = ['portal.mixin','mail.thread', 'mail.activity.mixin']
+# 	_order = 'id desc'
 
 	# name = fields.Char('Name')
 	# custom_salesperson_id = fields.Many2one('custom.salesperson', string="Salesperson", tracking=2)
@@ -161,146 +161,146 @@ class TargetTrackingLines(models.Model):
 	_description = "Target Tracking Line"
 
 	# target_id = fields.Many2one('target.flow', 'Target')
-	date_from = fields.Date('Start Date', required=True)
-	date_to = fields.Date('End Date', required=True)
-	custom_salesperson_id = fields.Many2one('custom.salesperson', string="Salesperson", tracking=2)
-	currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
-	monthly_target_amt = fields.Monetary('Monthly Target Amount')
-	company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
-	monthly_achieved_amt = fields.Monetary(string= 'Monthly Achieved Amount', compute='_compute_monthly_achievedd_amt')
-	progress = fields.Integer(string="progress", compute='_compute_progress')
-	state = fields.Selection([
-		('draft', 'Draft'),
-		('confirm', 'Confirmed'),
-		('cancel', 'Cancelled')], 'Status', default='draft')
+	# date_from = fields.Date('Start Date', required=True)
+	# date_to = fields.Date('End Date', required=True)
+	# custom_salesperson_id = fields.Many2one('custom.salesperson', string="Salesperson", tracking=2)
+	# currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
+	# monthly_target_amt = fields.Monetary('Monthly Target Amount')
+	# company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+	# monthly_achieved_amt = fields.Monetary(string= 'Monthly Achieved Amount', compute='_compute_monthly_achievedd_amt')
+	# progress = fields.Integer(string="progress", compute='_compute_progress')
+	# state = fields.Selection([
+	# 	('draft', 'Draft'),
+	# 	('confirm', 'Confirmed'),
+	# 	('cancel', 'Cancelled')], 'Status', default='draft')
 
-	@api.onchange('date_from')
-	def _onchange_custom_salesperson_id(self):
-		if not self.target_id.custom_salesperson_id:
-			raise UserError(_('Kindly choose the salesperson'))
-		self.custom_salesperson_id = self.target_id.custom_salesperson_id.id
+	# @api.onchange('date_from')
+	# def _onchange_custom_salesperson_id(self):
+	# 	if not self.target_id.custom_salesperson_id:
+	# 		raise UserError(_('Kindly choose the salesperson'))
+	# 	self.custom_salesperson_id = self.target_id.custom_salesperson_id.id
 
-	def _compute_progress(self):
-		for rec in self:
-			rec.progress = 0
-			if rec.monthly_achieved_amt > 1 and rec.monthly_target_amt > 1:
-				rec.progress = (rec.monthly_achieved_amt / rec.monthly_target_amt) * 100
-
-
-	def _compute_monthly_achievedd_amt(self):
-		for rec in self:
-			monthly_achieved_amt = 0.0
-			for i in self.env['account.move'].search([('custom_salesperson_id', '=', rec.custom_salesperson_id.id),
-				('invoice_date', '>=', rec.date_from),
-				('invoice_date', '<=', rec.date_to),
-				('move_type', '=', 'out_invoice'),('state', '=', 'posted')]):
-				monthly_achieved_amt += i.amount_diff
-
-			rec.monthly_achieved_amt = monthly_achieved_amt
+	# def _compute_progress(self):
+	# 	for rec in self:
+	# 		rec.progress = 0
+	# 		if rec.monthly_achieved_amt > 1 and rec.monthly_target_amt > 1:
+	# 			rec.progress = (rec.monthly_achieved_amt / rec.monthly_target_amt) * 100
 
 
-	def action_open_target_entries_month(self):
-		view_id = self.env.ref('saam_extension.view_out_invoice_tree_inherit_target').id  # Replace with your actual module and view ID
+	# def _compute_monthly_achievedd_amt(self):
+	# 	for rec in self:
+	# 		monthly_achieved_amt = 0.0
+	# 		for i in self.env['account.move'].search([('custom_salesperson_id', '=', rec.custom_salesperson_id.id),
+	# 			('invoice_date', '>=', rec.date_from),
+	# 			('invoice_date', '<=', rec.date_to),
+	# 			('move_type', '=', 'out_invoice'),('state', '=', 'posted')]):
+	# 			monthly_achieved_amt += i.amount_diff
 
-		action = {
-			"name": "Tracking Report - Monthly",
-			"type": "ir.actions.act_window",
-			"view_mode": "tree",
-			"res_model": "account.move",
-			# "view_id": view_id,  # Specify the view ID here
-			"target": "current",
-			"domain": [
-				('custom_salesperson_id', '=', self.custom_salesperson_id.id),
-				('invoice_date', '>=', self.date_from),
-				('invoice_date', '<=', self.date_to),
-				('move_type', '=', 'out_invoice'),('state', '=', 'posted')],
-			}
-		# Create records with the weekly target amount set to each line
-		move_ids = self.env['account.move'].search(action['domain'])
-		for move in move_ids:
-			for customer in move.partner_id.customer_target_tracking_lines:
-				if move.invoice_date >= customer.date_from and move.invoice_date <= customer.date_to and move.custom_salesperson_id.id == customer.custom_salesperson_id.id:
-					move.customer_target_amt = customer.customer_target_amt
-			move.write({
-				'salesperson_target_amt': self.monthly_target_amt})
+	# 		rec.monthly_achieved_amt = monthly_achieved_amt
 
-		return action
+
+	# def action_open_target_entries_month(self):
+	# 	view_id = self.env.ref('saam_extension.view_out_invoice_tree_inherit_target').id  # Replace with your actual module and view ID
+
+	# 	action = {
+	# 		"name": "Tracking Report - Monthly",
+	# 		"type": "ir.actions.act_window",
+	# 		"view_mode": "tree",
+	# 		"res_model": "account.move",
+	# 		# "view_id": view_id,  # Specify the view ID here
+	# 		"target": "current",
+	# 		"domain": [
+	# 			('custom_salesperson_id', '=', self.custom_salesperson_id.id),
+	# 			('invoice_date', '>=', self.date_from),
+	# 			('invoice_date', '<=', self.date_to),
+	# 			('move_type', '=', 'out_invoice'),('state', '=', 'posted')],
+	# 		}
+	# 	# Create records with the weekly target amount set to each line
+	# 	move_ids = self.env['account.move'].search(action['domain'])
+	# 	for move in move_ids:
+	# 		for customer in move.partner_id.customer_target_tracking_lines:
+	# 			if move.invoice_date >= customer.date_from and move.invoice_date <= customer.date_to and move.custom_salesperson_id.id == customer.custom_salesperson_id.id:
+	# 				move.customer_target_amt = customer.customer_target_amt
+	# 		move.write({
+	# 			'salesperson_target_amt': self.monthly_target_amt})
+
+	# 	return action
 
 class TargetTrackingLinesWeek(models.Model):
 	_name = "target.tracking.lines.week"
 	_description = "Target Tracking Lines - Week"
 
 	# target_week_id = fields.Many2one('target.flow', 'Target')
-	date_from = fields.Date('Start Date', required=True)
-	date_to = fields.Date('End Date', required=True)
-	custom_salesperson_id = fields.Many2one('custom.salesperson', string="Salesperson", tracking=2)
-	currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
-	weekly_target_amt = fields.Monetary('Weekly Target Amount')
-	weekly_achieved_amt = fields.Monetary('Weekly Achieved Amount', compute='_compute_weekly_achievedd_amt')
-	company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
-	progress = fields.Integer(string="progress", compute='_compute_progress')
-	state = fields.Selection([
-		('draft', 'Draft'),
-		('confirm', 'Confirmed'),
-		('cancel', 'Cancelled')], 'Status', default='draft')
-	prev_days_target_amt = fields.Monetary(string="Previous Week Amount")
-	end_days_target_amt = fields.Monetary(string="End Amount", compute="_compute_end_days_target_amt")
+	# date_from = fields.Date('Start Date', required=True)
+	# date_to = fields.Date('End Date', required=True)
+	# custom_salesperson_id = fields.Many2one('custom.salesperson', string="Salesperson", tracking=2)
+	# currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
+	# weekly_target_amt = fields.Monetary('Weekly Target Amount')
+	# weekly_achieved_amt = fields.Monetary('Weekly Achieved Amount', compute='_compute_weekly_achievedd_amt')
+	# company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+	# progress = fields.Integer(string="progress", compute='_compute_progress')
+	# state = fields.Selection([
+	# 	('draft', 'Draft'),
+	# 	('confirm', 'Confirmed'),
+	# 	('cancel', 'Cancelled')], 'Status', default='draft')
+	# prev_days_target_amt = fields.Monetary(string="Previous Week Amount")
+	# end_days_target_amt = fields.Monetary(string="End Amount", compute="_compute_end_days_target_amt")
 
-	def _compute_end_days_target_amt(self):
-		for rec in self:
-			rec.end_days_target_amt = rec.weekly_target_amt - rec.prev_days_target_amt
-
-
-	@api.onchange('date_from')
-	def _onchange_custom_salesperson_id(self):
-		if not self.target_week_id.custom_salesperson_id:
-			raise UserError(_('Kindly choose the salesperson'))
-		self.custom_salesperson_id = self.target_week_id.custom_salesperson_id.id
-
-	def _compute_progress(self):
-		for rec in self:
-			rec.progress = 0
-			if rec.weekly_achieved_amt > 1 and rec.weekly_target_amt > 1:
-				rec.progress = (rec.weekly_achieved_amt / rec.weekly_target_amt) * 100
-
-	def _compute_weekly_achievedd_amt(self):
-		for rec in self:
-			weekly_achieved_amt = 0.0
-			for i in self.env['account.move'].search([('custom_salesperson_id', '=', rec.custom_salesperson_id.id),
-				('invoice_date', '>=', rec.date_from),
-				('invoice_date', '<=', rec.date_to),
-				('move_type', '=', 'out_invoice'),('state', '=', 'posted')]):
-				weekly_achieved_amt += i.amount_diff
-			rec.weekly_achieved_amt = weekly_achieved_amt
+	# def _compute_end_days_target_amt(self):
+	# 	for rec in self:
+	# 		rec.end_days_target_amt = rec.weekly_target_amt - rec.prev_days_target_amt
 
 
-	def action_open_target_entries_week(self):
-		view_id = self.env.ref('saam_extension.view_out_invoice_tree_inherit_target').id  # Replace with your actual module and view ID
+	# @api.onchange('date_from')
+	# def _onchange_custom_salesperson_id(self):
+	# 	if not self.target_week_id.custom_salesperson_id:
+	# 		raise UserError(_('Kindly choose the salesperson'))
+	# 	self.custom_salesperson_id = self.target_week_id.custom_salesperson_id.id
 
-		action = {
-			"name": "Tracking Report - Weekly",
-			"type": "ir.actions.act_window",
-			"view_mode": "tree",
-			"res_model": "account.move",
-			# "view_id": view_id,  # Specify the view ID here
-			"target": "current",
-			"domain": [
-				('custom_salesperson_id', '=', self.target_week_id.custom_salesperson_id.id),
-				('invoice_date', '>=', self.date_from),
-				('invoice_date', '<=', self.date_to),
-				('move_type', '=', 'out_invoice'),('state', '=', 'posted')],
-			}
+	# def _compute_progress(self):
+	# 	for rec in self:
+	# 		rec.progress = 0
+	# 		if rec.weekly_achieved_amt > 1 and rec.weekly_target_amt > 1:
+	# 			rec.progress = (rec.weekly_achieved_amt / rec.weekly_target_amt) * 100
 
-		# Create records with the weekly target amount set to each line
-		move_ids = self.env['account.move'].search(action['domain'])
-		# for move in move_ids:
-		for move in move_ids:
-			for customer in move.partner_id.customer_target_tracking_lines:
-				if move.invoice_date >= customer.date_from and move.invoice_date <= customer.date_to and move.custom_salesperson_id.id == customer.custom_salesperson_id.id:
-					move.customer_target_amt = customer.customer_target_amt
-			move.write({'salesperson_target_amt': self.weekly_target_amt})
+	# def _compute_weekly_achievedd_amt(self):
+	# 	for rec in self:
+	# 		weekly_achieved_amt = 0.0
+	# 		for i in self.env['account.move'].search([('custom_salesperson_id', '=', rec.custom_salesperson_id.id),
+	# 			('invoice_date', '>=', rec.date_from),
+	# 			('invoice_date', '<=', rec.date_to),
+	# 			('move_type', '=', 'out_invoice'),('state', '=', 'posted')]):
+	# 			weekly_achieved_amt += i.amount_diff
+	# 		rec.weekly_achieved_amt = weekly_achieved_amt
 
-		return action
+
+	# def action_open_target_entries_week(self):
+	# 	view_id = self.env.ref('saam_extension.view_out_invoice_tree_inherit_target').id  # Replace with your actual module and view ID
+
+	# 	action = {
+	# 		"name": "Tracking Report - Weekly",
+	# 		"type": "ir.actions.act_window",
+	# 		"view_mode": "tree",
+	# 		"res_model": "account.move",
+	# 		# "view_id": view_id,  # Specify the view ID here
+	# 		"target": "current",
+	# 		"domain": [
+	# 			('custom_salesperson_id', '=', self.target_week_id.custom_salesperson_id.id),
+	# 			('invoice_date', '>=', self.date_from),
+	# 			('invoice_date', '<=', self.date_to),
+	# 			('move_type', '=', 'out_invoice'),('state', '=', 'posted')],
+	# 		}
+
+	# 	# Create records with the weekly target amount set to each line
+	# 	move_ids = self.env['account.move'].search(action['domain'])
+	# 	# for move in move_ids:
+	# 	for move in move_ids:
+	# 		for customer in move.partner_id.customer_target_tracking_lines:
+	# 			if move.invoice_date >= customer.date_from and move.invoice_date <= customer.date_to and move.custom_salesperson_id.id == customer.custom_salesperson_id.id:
+	# 				move.customer_target_amt = customer.customer_target_amt
+	# 		move.write({'salesperson_target_amt': self.weekly_target_amt})
+
+	# 	return action
 
 # class AccountMove(models.Model):
 # 	_inherit = 'account.move'
