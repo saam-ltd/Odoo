@@ -118,84 +118,84 @@ class SchedulePlanningLines(models.Model):
 	_description = "Schedule Planning Line"
 
 	# schedule_id = fields.Many2one('schedule.planning', 'Schedule Planning')
-	date = fields.Date(string="Date")
-	dayofweek = fields.Selection([
-		('0', 'Monday'),
-		('1', 'Tuesday'),
-		('2', 'Wednesday'),
-		('3', 'Thursday'),
-		('4', 'Friday'),
-		('5', 'Saturday'),
-		('6', 'Sunday')], 'Day of Week', required=True, index=True, default='0')
+	# date = fields.Date(string="Date")
+	# dayofweek = fields.Selection([
+	# 	('0', 'Monday'),
+	# 	('1', 'Tuesday'),
+	# 	('2', 'Wednesday'),
+	# 	('3', 'Thursday'),
+	# 	('4', 'Friday'),
+	# 	('5', 'Saturday'),
+	# 	('6', 'Sunday')], 'Day of Week', required=True, index=True, default='0')
 
-	# customer_id = fields.Many2one('res.partner', string="Customer")
-	customer_ids = fields.Many2many('res.partner', string="Customer")
-	activity_type_id = fields.Many2one('mail.activity.type',string="Activity Type")
-	company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+	# # customer_id = fields.Many2one('res.partner', string="Customer")
+	# customer_ids = fields.Many2many('res.partner', string="Customer")
+	# activity_type_id = fields.Many2one('mail.activity.type',string="Activity Type")
+	# company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
 	
-class MailActivity(models.Model):
-	_inherit = 'mail.activity'
+# class MailActivity(models.Model):
+# 	_inherit = 'mail.activity'
 
-	schedule_plan_line_id = fields.Many2one('schedule.planning.line',string="Schedule Plan")
-	customer_id = fields.Many2one('res.partner', string="Customer")
-	email = fields.Char(string="Email")
-	mobile = fields.Char(string="Mobile")
-	phone = fields.Char(string="Phone")
-	zip = fields.Char(string="Zip")
-	city = fields.Char(string="City")
-	street = fields.Char(string="Street")
-	street2 = fields.Char(string="Street 2")
-	state_id = fields.Many2one('res.country.state',string="State")
-	country_id = fields.Many2one('res.country',string="Country")
-	activity_state = fields.Selection([
-		('draft', 'Draft'),
-		('running', 'Running'), ('stopped', 'Stopped'),
-		('done', 'Activity Done'),
-		('cancel', 'Activity Cancelled')], 'Activity Status', default='draft')
-	is_from_scheduled_planning = fields.Boolean(string='Is From Scheduled Planning')
-	custom_salesperson_id = fields.Many2one('custom.salesperson', string="Salesperson", tracking=2)
-	task_timer = fields.Boolean(string='Timer', default=False)
+# 	schedule_plan_line_id = fields.Many2one('schedule.planning.line',string="Schedule Plan")
+# 	customer_id = fields.Many2one('res.partner', string="Customer")
+# 	email = fields.Char(string="Email")
+# 	mobile = fields.Char(string="Mobile")
+# 	phone = fields.Char(string="Phone")
+# 	zip = fields.Char(string="Zip")
+# 	city = fields.Char(string="City")
+# 	street = fields.Char(string="Street")
+# 	street2 = fields.Char(string="Street 2")
+# 	state_id = fields.Many2one('res.country.state',string="State")
+# 	country_id = fields.Many2one('res.country',string="Country")
+# 	activity_state = fields.Selection([
+# 		('draft', 'Draft'),
+# 		('running', 'Running'), ('stopped', 'Stopped'),
+# 		('done', 'Activity Done'),
+# 		('cancel', 'Activity Cancelled')], 'Activity Status', default='draft')
+# 	is_from_scheduled_planning = fields.Boolean(string='Is From Scheduled Planning')
+# 	custom_salesperson_id = fields.Many2one('custom.salesperson', string="Salesperson", tracking=2)
+# 	task_timer = fields.Boolean(string='Timer', default=False)
 
-	start_time = fields.Datetime(string='Start Time', readonly=True)
-	end_time = fields.Datetime(string='End Time', readonly=True)
-	elapsed_time = fields.Char(string='Elapsed Time', compute='_compute_elapsed_time', store=True)
+# 	start_time = fields.Datetime(string='Start Time', readonly=True)
+# 	end_time = fields.Datetime(string='End Time', readonly=True)
+# 	elapsed_time = fields.Char(string='Elapsed Time', compute='_compute_elapsed_time', store=True)
 
-	@api.constrains('custom_salesperson_id', 'activity_state')
-	def _check_salesperson(self):
-		for rec in self:
-			if rec.activity_state in ['running', 'stopped']:
-				existing_plans = rec.search([
-					('custom_salesperson_id', '=', rec.custom_salesperson_id.id),
-					('activity_state', 'in', ['running', 'stopped']),
-					('id', '!=', rec.id),
-				])
-				if existing_plans:
-					raise UserError(_('Please complete the previous task before moving on to another plan.'))
+# 	@api.constrains('custom_salesperson_id', 'activity_state')
+# 	def _check_salesperson(self):
+# 		for rec in self:
+# 			if rec.activity_state in ['running', 'stopped']:
+# 				existing_plans = rec.search([
+# 					('custom_salesperson_id', '=', rec.custom_salesperson_id.id),
+# 					('activity_state', 'in', ['running', 'stopped']),
+# 					('id', '!=', rec.id),
+# 				])
+# 				if existing_plans:
+# 					raise UserError(_('Please complete the previous task before moving on to another plan.'))
 
 
-	@api.depends('start_time', 'end_time', 'state')
-	def _compute_elapsed_time(self):
-		for timer in self:
-			if timer.activity_state == 'running':
-				timer.elapsed_time = (fields.Datetime.now() - timer.start_time).total_seconds() / 3600.0
-			elif timer.activity_state == 'stopped':
-				diff = fields.Datetime.from_string(timer.end_time) - fields.Datetime.from_string(timer.start_time)
+# 	@api.depends('start_time', 'end_time', 'state')
+# 	def _compute_elapsed_time(self):
+# 		for timer in self:
+# 			if timer.activity_state == 'running':
+# 				timer.elapsed_time = (fields.Datetime.now() - timer.start_time).total_seconds() / 3600.0
+# 			elif timer.activity_state == 'stopped':
+# 				diff = fields.Datetime.from_string(timer.end_time) - fields.Datetime.from_string(timer.start_time)
 				
-				total_seconds = diff.total_seconds()
-				hours, remainder = divmod(total_seconds, 3600)
-				minutes, _ = divmod(remainder, 60)
+# 				total_seconds = diff.total_seconds()
+# 				hours, remainder = divmod(total_seconds, 3600)
+# 				minutes, _ = divmod(remainder, 60)
 
-				timer.elapsed_time = f"{int(hours):02}:{int(minutes):02}"
-			else:
-				timer.elapsed_time = 0.0
+# 				timer.elapsed_time = f"{int(hours):02}:{int(minutes):02}"
+# 			else:
+# 				timer.elapsed_time = 0.0
 
 
-	def action_timer_start(self):
-		self.write({'activity_state': 'running', 'start_time': fields.Datetime.now()})
+# 	def action_timer_start(self):
+# 		self.write({'activity_state': 'running', 'start_time': fields.Datetime.now()})
 
-	# def action_timer_pause(self):
-	# 	self.write({'activity_state': 'paused', 'end_time': fields.Datetime.now()})
-	# 	print("end_time-----------------------------",self.end_time)
+# 	# def action_timer_pause(self):
+# 	# 	self.write({'activity_state': 'paused', 'end_time': fields.Datetime.now()})
+# 	# 	print("end_time-----------------------------",self.end_time)
 
 
 	def action_timer_stop(self):
