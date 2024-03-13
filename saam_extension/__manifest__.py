@@ -23,7 +23,7 @@
         'views/invoice_view.xml',
         'views/sale_view.xml',
         'views/stock_view.xml',
-        'views/schedule_planning.xml',
+        # 'views/schedule_planning.xml',
     ],
     
     'installable': True,

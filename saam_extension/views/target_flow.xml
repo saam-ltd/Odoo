@@ -2,7 +2,7 @@
 <odoo>
 
 	<!-- New - Invoice Tree View Inherit -->
-	<record model="ir.ui.view" id="view_out_invoice_tree_inherit_target">
+	<!-- <record model="ir.ui.view" id="view_out_invoice_tree_inherit_target">
 		<field name="name">account.move.tree.inherit.target</field>
 		<field name="model">account.move</field>
 		<field eval="10" name="priority"/>
@@ -35,10 +35,10 @@
 				<field name="state" invisible='1'/>
 			</tree>
 		</field>
-	</record>
+	</record> -->
 
 <!-- Customer - Target Tracking invoice view -->
-	<record model="ir.ui.view" id="view_out_invoice_tree_inherit_cus_target">
+	<!-- <record model="ir.ui.view" id="view_out_invoice_tree_inherit_cus_target">
 		<field name="name">account.move.tree.inherit.cus.target</field>
 		<field name="model">account.move</field>
 		<field eval="10" name="priority"/>
@@ -183,9 +183,9 @@
 				</div>
 			</form>
 		</field>
-	</record>
+	</record> -->
 
-	<record model="ir.ui.view" id="view_target_flow_tree">
+	<!-- <record model="ir.ui.view" id="view_target_flow_tree">
 		<field name="name">Target Tracking Tree</field>
 		<field name="model">target.flow</field>
 		<field name="arch" type="xml">
@@ -212,7 +212,7 @@
 				<field name="linked_user_id" string="Linked User"/>
 			</search>
 		</field>
-	</record>
+	</record> -->
 
 	<!-- <record id="action_target_flow_menu" model="ir.actions.act_window">
 		<field name="name">Target Tracking</field>

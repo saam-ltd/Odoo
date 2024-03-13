@@ -8,4 +8,3 @@ access_target_flow_admin,target.flow.admin,model_target_flow,saam_extension.grou
 access_target_tracking_lines,target.tracking.lines,model_target_tracking_lines,,1,1,1,1
 access_target_tracking_lines_week,target.tracking.lines.week,model_target_tracking_lines_week,,1,1,1,1
 access_customer_target_tracking_lines,customer.target.tracking.lines,model_customer_target_tracking_lines,,1,1,1,0
-access_schedule_planning_line,schedule.planning.line,model_schedule_planning_line,,1,1,1,1
