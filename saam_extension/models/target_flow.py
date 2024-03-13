@@ -156,9 +156,9 @@ _logger = logging.getLogger(__name__)
 	# def action_target_draft(self):
 	# 	self.write({"state": "draft"})
 
-class TargetTrackingLines(models.Model):
-	_name = "target.tracking.lines"
-	_description = "Target Tracking Line"
+# class TargetTrackingLines(models.Model):
+# 	_name = "target.tracking.lines"
+# 	_description = "Target Tracking Line"
 
 	# target_id = fields.Many2one('target.flow', 'Target')
 	# date_from = fields.Date('Start Date', required=True)
@@ -226,9 +226,9 @@ class TargetTrackingLines(models.Model):
 
 	# 	return action
 
-class TargetTrackingLinesWeek(models.Model):
-	_name = "target.tracking.lines.week"
-	_description = "Target Tracking Lines - Week"
+# class TargetTrackingLinesWeek(models.Model):
+# 	_name = "target.tracking.lines.week"
+# 	_description = "Target Tracking Lines - Week"
 
 	# target_week_id = fields.Many2one('target.flow', 'Target')
 	# date_from = fields.Date('Start Date', required=True)
