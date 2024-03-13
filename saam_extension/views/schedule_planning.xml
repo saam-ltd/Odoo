@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 	<!-- Form View -->
-    <record id="schedule_planning_form" model="ir.ui.view">
+    <!-- <record id="schedule_planning_form" model="ir.ui.view">
         <field name="name">schedule.planning.form</field>
         <field name="model">schedule.planning</field>
         <field name="arch" type="xml">
@@ -77,10 +77,10 @@
                 </div>
             </form>
         </field>
-    </record>
+    </record> -->
 
 	<!-- Tree View -->
-    <record id="schedule_planning_tree" model="ir.ui.view">
+   <!--  <record id="schedule_planning_tree" model="ir.ui.view">
         <field name="name">schedule.planning.tree</field>
         <field name="model">schedule.planning</field>
         <field name="arch" type="xml">
@@ -94,9 +94,9 @@
 				   decoration-success="state in ('activity_created')"/>
 			</tree>
         </field>
-    </record>
+    </record> -->
 
-    <record id="mail_activity_view_form_inherit_schedule" model="ir.ui.view">
+   <!--  <record id="mail_activity_view_form_inherit_schedule" model="ir.ui.view">
         <field name="name">mail.activity.view.form.inherit.schedule</field>
         <field name="model">mail.activity</field>
         <field name="inherit_id" ref="mail.mail_activity_view_form_popup"/>
@@ -104,15 +104,15 @@
         	<xpath expr="//form/sheet" position="before">
         		<header>
                      <button string="Start" type="object" class="oe_highlight" icon="fa-play"
-                                    attrs="{'invisible': ['|',('activity_state', '!=', 'draft'), ('is_from_scheduled_planning', '!=', True)]}" name="action_timer_start"/>
+                                    attrs="{'invisible': ['|',('activity_state', '!=', 'draft'), ('is_from_scheduled_planning', '!=', True)]}" name="action_timer_start"/> -->
                             <!-- <button string="Pause" type="object" class="oe_highlight" icon="fa-pause"
                                     attrs="{'invisible': [('activity_state', '!=', 'running')]}" name="action_timer_pause"/> -->
-                            <button string="Stop" type="object" class="oe_highlight" icon="fa-stop"
-                                    attrs="{'invisible': ['|',('activity_state', '!=', 'running'), ('is_from_scheduled_planning', '!=', True)]}" name="action_timer_stop"/>
+                           <!--  <button string="Stop" type="object" class="oe_highlight" icon="fa-stop"
+                                    attrs="{'invisible': ['|',('activity_state', '!=', 'running'), ('is_from_scheduled_planning', '!=', True)]}" name="action_timer_stop"/> -->
 
                    <!--  <button string="Start" type="object" name="action_timer_start" class="oe_highlight" attrs="{'invisible': ['|',('activity_state', '!=', 'draft'), ('is_from_scheduled_planning', '!=', True)]}"/> -->
 
-                    <button string="Mark as Done" type="object" name="action_mark_done"  class="oe_highlight" attrs="{'invisible': ['|',('activity_state', '!=', 'stopped'), ('is_from_scheduled_planning', '!=', True)]}"/>
+                    <!-- <button string="Mark as Done" type="object" name="action_mark_done"  class="oe_highlight" attrs="{'invisible': ['|',('activity_state', '!=', 'stopped'), ('is_from_scheduled_planning', '!=', True)]}"/>
                     <button string="Cancel" type="object" name="action_mark_cancel"  class="oe_highlight" 
                     	attrs="{'invisible': ['|',('activity_state', '!=', 'draft'), ('is_from_scheduled_planning', '!=', True)]}"/>
                     <field name="activity_state" widget="statusbar" attrs="{'invisible': [('is_from_scheduled_planning', '!=', True)]}"/>
@@ -164,8 +164,8 @@
             <footer position="replace"/>
         </field>
     </record>
-    
-     <record id="mail_activity_view_tree_inherit_schedule" model="ir.ui.view">
+     -->
+     <!-- <record id="mail_activity_view_tree_inherit_schedule" model="ir.ui.view">
         <field name="name">mail.activity.view.tree.inherit.schedule</field>
         <field name="model">mail.activity</field>
         <field name="inherit_id" ref="mail.mail_activity_view_tree"/>
@@ -192,10 +192,10 @@
                     decoration-success="activity_state in ('done')"  string="State"/>
             </field>
         </field>
-    </record>
+    </record> -->
 
     <!-- Search view inherit -->
-    <record id="mail_activity_view_search_inheirt" model="ir.ui.view">
+    <!-- <record id="mail_activity_view_search_inheirt" model="ir.ui.view">
         <field name="name">mail.activity.view.search.inherit</field>
         <field name="model">mail.activity</field>
         <field name="inherit_id" ref="mail.mail_activity_view_search"/>
@@ -203,7 +203,6 @@
             <xpath expr="//search" type="inside">
                 <field name="custom_salesperson_id"/>
                 <field name="customer_id"/>
-                <!-- Group By -->
                 <filter name="group_by_custom_salesperson_id" string="Salesperson" context="{'group_by': 'custom_salesperson_id'}"/>
                 <filter name="group_by_customer_id" string="Customer" context="{'group_by': 'customer_id'}"/>
                 <filter name="group_by_activity_state" string="State" context="{'group_by': 'activity_state'}"/>
@@ -215,11 +214,11 @@
             </xpath>
         </field>
     </record>
-
+ -->
     
     
 	<!-- Action View -->
-     <record id="action_schedule_planning" model="ir.actions.act_window">
+     <!-- <record id="action_schedule_planning" model="ir.actions.act_window">
         <field name="name">Schedule Planning</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">schedule.planning</field>
@@ -236,7 +235,7 @@
 		    (0, 0, {'view_mode': 'form', 'view_id': ref('mail_activity_view_form_inherit_schedule')}),
 		    ]"/>
 		    <field name="view_mode">tree</field>
-    </record>
+    </record> -->
 
     <!-- <record id="mail_activity_action_inherit_schedule" model="ir.actions.server">
         <field name="name">Activities - Schedule</field>
@@ -249,14 +248,14 @@
     </record> -->
   
  
-    <record id="mail_activity_action_inherit_done" model="ir.actions.act_window">
+    <!-- <record id="mail_activity_action_inherit_done" model="ir.actions.act_window">
         <field name="name">Done - Activities</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">mail.activity</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('activity_state','=','done')]</field>
     </record>
-
+ -->
 	<!-- Menu Details -->
 
      <!-- <menuitem 

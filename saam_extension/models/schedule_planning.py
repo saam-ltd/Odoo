@@ -7,28 +7,28 @@ class SchedulePlanning(models.Model):
 	_name = "schedule.planning"
 	_description = "Schedule Planning"
 	_inherit = ['mail.thread', 'mail.activity.mixin']
-	_order = 'id desc'
+	# _order = 'id desc'
 
-	name = fields.Char(string="Name", copy=False, default='New')
-	start_date = fields.Date(string="Start Date", tracking=True)
-	end_date = fields.Date(string="End  Date" ,tracking=True)
-	custom_salesperson_id = fields.Many2one('custom.salesperson', string="Salesperson", tracking=2)
-	manager_id = fields.Many2one('res.users', string="Manager", tracking=2)
-	linked_user_id = fields.Many2one('res.users', string="Linked User", tracking=2)
-	company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
-	state = fields.Selection([
-		('draft', 'Draft'),
-		('confirm', 'Confirmed'),
-		('activity_created', 'Activity Created'),
-		('cancel', 'Cancelled')], 'Status', default='draft',tracking=2)
-	schedule_plan_lines = fields.One2many('schedule.planning.line','schedule_id',string="Schedule Plan Lines")
-	note = fields.Text(string="Terms and condition")
+	# name = fields.Char(string="Name", copy=False, default='New')
+	# start_date = fields.Date(string="Start Date", tracking=True)
+	# end_date = fields.Date(string="End  Date" ,tracking=True)
+	# custom_salesperson_id = fields.Many2one('custom.salesperson', string="Salesperson", tracking=2)
+	# manager_id = fields.Many2one('res.users', string="Manager", tracking=2)
+	# linked_user_id = fields.Many2one('res.users', string="Linked User", tracking=2)
+	# company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+	# state = fields.Selection([
+	# 	('draft', 'Draft'),
+	# 	('confirm', 'Confirmed'),
+	# 	('activity_created', 'Activity Created'),
+	# 	('cancel', 'Cancelled')], 'Status', default='draft',tracking=2)
+	# schedule_plan_lines = fields.One2many('schedule.planning.line','schedule_id',string="Schedule Plan Lines")
+	# note = fields.Text(string="Terms and condition")
 
-	@api.constrains('start_date', 'end_date')
-	def _check_dates(self):
-		for record in self:
-			if record.start_date > record.end_date:
-				raise UserError("From date cannot be greater than End date.")
+	# @api.constrains('start_date', 'end_date')
+	# def _check_dates(self):
+	# 	for record in self:
+	# 		if record.start_date > record.end_date:
+	# 			raise UserError("From date cannot be greater than End date.")
 
 	# @api.onchange('custom_salesperson_id')
 	# def _onchange_custom_salesperson_id(self):
@@ -41,77 +41,77 @@ class SchedulePlanning(models.Model):
 	#         }
 	#         i.sudo().create(acitivties)
 
-	def generate_weekday_entries(self):
-		if not self.start_date and not self.end_date:raise UserError(_("Kindly fill From date and To date in Period."))
-		if not self.custom_salesperson_id:raise UserError(_("Kindly map the salesperson."))
-		if self.custom_salesperson_id:
-			if not self.custom_salesperson_id.linked_user_id:raise UserError(_('Kindly Map the Lined user in Salesperson'))
-			self.linked_user_id = self.custom_salesperson_id.linked_user_id.id
-			if not self.custom_salesperson_id.manager_id:raise UserError(_('Kindly Map the Manager in Salesperson'))
-			self.manager_id = self.custom_salesperson_id.manager_id.id
+	# def generate_weekday_entries(self):
+	# 	if not self.start_date and not self.end_date:raise UserError(_("Kindly fill From date and To date in Period."))
+	# 	if not self.custom_salesperson_id:raise UserError(_("Kindly map the salesperson."))
+	# 	if self.custom_salesperson_id:
+	# 		if not self.custom_salesperson_id.linked_user_id:raise UserError(_('Kindly Map the Lined user in Salesperson'))
+	# 		self.linked_user_id = self.custom_salesperson_id.linked_user_id.id
+	# 		if not self.custom_salesperson_id.manager_id:raise UserError(_('Kindly Map the Manager in Salesperson'))
+	# 		self.manager_id = self.custom_salesperson_id.manager_id.id
 
-			self.schedule_plan_lines.unlink()  # Clear existing records
+	# 		self.schedule_plan_lines.unlink()  # Clear existing records
 
-			dayofweek_customer_map = {line.dayofweek: line.customer_ids.ids for line in self.custom_salesperson_id.activity_lines}
+	# 		dayofweek_customer_map = {line.dayofweek: line.customer_ids.ids for line in self.custom_salesperson_id.activity_lines}
 
-			start_date = fields.Date.from_string(self.start_date)
-			end_date = fields.Date.from_string(self.end_date)
+	# 		start_date = fields.Date.from_string(self.start_date)
+	# 		end_date = fields.Date.from_string(self.end_date)
 
-			current_date = start_date
-			while current_date <= end_date:
-				if current_date.weekday() < 5:  # Weekdays are 0 to 4 (Monday to Friday)
-					# Get customer_ids based on the dayofweek
-					customer_ids = dayofweek_customer_map.get(str(current_date.weekday()), [])
+	# 		current_date = start_date
+	# 		while current_date <= end_date:
+	# 			if current_date.weekday() < 5:  # Weekdays are 0 to 4 (Monday to Friday)
+	# 				# Get customer_ids based on the dayofweek
+	# 				customer_ids = dayofweek_customer_map.get(str(current_date.weekday()), [])
 
-					self.schedule_plan_lines.create({
-						'schedule_id': self.id,
-						'date': current_date,
-						'dayofweek': str(current_date.weekday()),  # Convert to string to match the selection field
-						'customer_ids': [(6, 0, customer_ids)] if customer_ids else False,
-					})
+	# 				self.schedule_plan_lines.create({
+	# 					'schedule_id': self.id,
+	# 					'date': current_date,
+	# 					'dayofweek': str(current_date.weekday()),  # Convert to string to match the selection field
+	# 					'customer_ids': [(6, 0, customer_ids)] if customer_ids else False,
+	# 				})
 
-				current_date += timedelta(days=1)
+	# 			current_date += timedelta(days=1)
 
-	def action_create_schedule_activity(self):
-		# create the schedule activities for respective customers
-		model_id = self.env['ir.model'].search([('model','=','res.partner')],limit=1)
+	# def action_create_schedule_activity(self):
+	# 	# create the schedule activities for respective customers
+	# 	model_id = self.env['ir.model'].search([('model','=','res.partner')],limit=1)
 
-		for line in self.schedule_plan_lines:
-			for customer in line.customer_ids:
-				activity_id = self.env['mail.activity'].create({
-					'res_model': 'res.partner',
-					'res_id': customer.id,
-					'custom_salesperson_id': self.custom_salesperson_id.id,
-					'user_id': self.custom_salesperson_id.linked_user_id.id,
-					'res_model_id': model_id.id,
-					'date_deadline':line.date,
-					'customer_id': customer.id,
-					'street': customer.street if customer.street else '',
-					'street2': customer.street2 if customer.street2 else '',
-					'city': customer.city if customer.city else False,
-					'state_id': customer.state_id.id if customer.state_id.id else False,
-					'country_id': customer.country_id.id if customer.country_id.id else False,
-					'zip': customer.zip if customer.zip else '',
-					'email': customer.email if customer.email else '',
-					'mobile': customer.mobile if customer.mobile else '',
-					'phone': customer.phone if customer.phone else '',
-					'activity_type_id':line.activity_type_id.id,
-					'schedule_plan_line_id':line.id,
-					'is_from_scheduled_planning': True
-					})
-		self.write({"state": "activity_created"})
+	# 	for line in self.schedule_plan_lines:
+	# 		for customer in line.customer_ids:
+	# 			activity_id = self.env['mail.activity'].create({
+	# 				'res_model': 'res.partner',
+	# 				'res_id': customer.id,
+	# 				'custom_salesperson_id': self.custom_salesperson_id.id,
+	# 				'user_id': self.custom_salesperson_id.linked_user_id.id,
+	# 				'res_model_id': model_id.id,
+	# 				'date_deadline':line.date,
+	# 				'customer_id': customer.id,
+	# 				'street': customer.street if customer.street else '',
+	# 				'street2': customer.street2 if customer.street2 else '',
+	# 				'city': customer.city if customer.city else False,
+	# 				'state_id': customer.state_id.id if customer.state_id.id else False,
+	# 				'country_id': customer.country_id.id if customer.country_id.id else False,
+	# 				'zip': customer.zip if customer.zip else '',
+	# 				'email': customer.email if customer.email else '',
+	# 				'mobile': customer.mobile if customer.mobile else '',
+	# 				'phone': customer.phone if customer.phone else '',
+	# 				'activity_type_id':line.activity_type_id.id,
+	# 				'schedule_plan_line_id':line.id,
+	# 				'is_from_scheduled_planning': True
+	# 				})
+	# 	self.write({"state": "activity_created"})
 
-	def action_schedule_draft(self):
-		self.write({"state": "draft"})
+	# def action_schedule_draft(self):
+	# 	self.write({"state": "draft"})
 
-	def action_schedule_confirm(self):
-		self.write({"state": "confirm"})
+	# def action_schedule_confirm(self):
+	# 	self.write({"state": "confirm"})
 
-	def action_schedule_cancel(self):
-		self.write({"state": "cancel"})
+	# def action_schedule_cancel(self):
+	# 	self.write({"state": "cancel"})
 
-	def action_schedule_draft(self):
-		self.write({"state": "draft"})
+	# def action_schedule_draft(self):
+	# 	self.write({"state": "draft"})
 	
 class SchedulePlanningLines(models.Model):
 	_name = 'schedule.planning.line'
