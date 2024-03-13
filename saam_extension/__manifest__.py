@@ -1,5 +1,5 @@
 {
-    'name': 'Saam Extension',
+    'name': 'Samm Extension',
     'version': '15.0.1',
     'category': '',
     'summary': 'Saam Extension',
