@@ -29,7 +29,7 @@ class SaleOrder(models.Model):
             
     def action_confirm(self):
         res = super(SaleOrder,self).action_confirm()
-        if not self.is_accessed_sp:
+        if self.is_accessed_sp:
             raise UserError("You are not allowed to confirm the SO")
         return res
 
