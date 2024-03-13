@@ -5,6 +5,6 @@ from . import invoice
 from . import sale
 from . import stock
 from . import custom_salesperson
-from . import target_flow
+# from . import target_flow
 # from . import schedule_planning
 

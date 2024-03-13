@@ -16,7 +16,7 @@
         'data/mail_template.xml',
         'data/ir_cron_data.xml',
         'views/custom_salesperson.xml',
-        'views/target_flow.xml',
+        # 'views/target_flow.xml',
         'views/partner.xml',
         'views/product.xml',
         'views/res_company.xml',
