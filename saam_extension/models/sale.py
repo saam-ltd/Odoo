@@ -20,16 +20,27 @@ class SaleOrder(models.Model):
     # logistic_duration_id =  fields.Many2one('customer.logistic.timing',string='Logistic Timing',related='partner_id.customer_logistic_id',tracking=2,copy=False)
     customer_category_id =  fields.Many2one('customer.catgeory',string='Customer Category',related='partner_id.customer_category_id',tracking=2,copy=False)
     customer_remarks =  fields.Text(string='Customer Remarks',related='partner_id.cus_remarks', tracking=2,copy=False)
-    is_accessed_sp = fields.Boolean(string="Is accessed salesperson", compute='_compute_accessed_salesperson')
+    is_accessed_sp = fields.Boolean(string="Is accessed salesperson", onchange='_onchange_accessed_salesperson')
+    is_non_accessed_sp = fields.Boolean(string="Is Non custom salesperson", compute='_compute_non_salesperson', default=False)
 
-    def _compute_accessed_salesperson(self):
+    @api.onchange('is_accessed_sp')
+    def _onchange_accessed_salesperson(self):
         for rec in self:
-            group_salesperson = self.env.ref('saam_extension.group_custom_sales_person')
-            rec.is_accessed_sp = group_salesperson in self.env.user.groups_id
+            if self.env.user.has_group('saam_extension.group_custom_sales_person'):
+                rec.is_accessed_sp = True
+            else:
+                rec.is_accessed_sp = False
+
+    def _compute_non_salesperson(self):
+        for rec in self:
+            if not self.env.user.has_group('saam_extension.group_custom_sales_person'):
+                rec.is_non_accessed_sp = True
+            else:
+                rec.is_non_accessed_sp = False
             
     def action_confirm(self):
         res = super(SaleOrder,self).action_confirm()
-        if self.is_accessed_sp:
+        if self.is_accessed_sp and not self.is_non_accessed_sp:
             raise UserError("You are not allowed to confirm the SO")
         return res
 
