@@ -22,15 +22,5 @@ class CustomerCategory(models.Model):
 	name = fields.Char(string='Name',copy=False,required=True)
 	company_id = fields.Many2one('res.company', 'Company', required=True, index=True, default=lambda self: self.env.company)
 
-# class CustomerLogisticTiming(models.Model):
-# 	_name = 'customer.logistic.timing' 
-# 	_inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'utm.mixin']
-# 	_description = "Customer Logistic Timing"
-
-	# name = fields.Char(string='Name',copy=False,required=True)
-	# company_id = fields.Many2one('res.company', 'Company', required=True, index=True, default=lambda self: self.env.company)
-
-
-
 	
 
