@@ -19,7 +19,7 @@
                         	<field name="active" invisible='1'/>
                         </group>
                     </group>
-                    <notebook>
+                    <!-- <notebook>
                         <page string="Activity Lines" name="activity_lines">
                             <field name="activity_lines" >
                                 <tree string="Activity Lines" editable="bottom">
@@ -28,7 +28,7 @@
                                 </tree>
                             </field>
                         </page>
-                    </notebook>
+                    </notebook> -->
                 </sheet>
                 <div class="oe_chatter">
                     <field name="activity_ids"/>
