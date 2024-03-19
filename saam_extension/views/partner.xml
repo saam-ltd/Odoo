@@ -14,27 +14,8 @@
                 <field name="gl_code"/>
                 <field name="is_cus" invisible="1"/>
                 <field name="customer_category_id" attrs="{'invisible': [('is_cus', '=',False)]}"/>
-                <!-- <field name="customer_logistic_id" attrs="{'invisible': [('is_cus', '=',False)]}"/> -->
                 <field name="cus_remarks" attrs="{'invisible': [('is_cus', '=',False)]}"/>
             </field>
-            <!-- <xpath expr="//notebook/page[@name='internal_notes']" position="after">
-                <page string="Customer Target Tracking" name="cus_tracking_lines">
-                    <field name="customer_target_tracking_lines">
-                        <tree string="Customer Target Tracking" editable="top">
-                            <field name="custom_salesperson_id" optional="hide"/>
-                            <field name="create_date" optional="hide"/>
-                            <field name="write_date" optional="hide"/>
-                            <field name="date_from"/>
-                            <field name="date_to"/>
-                            <field name="currency_id" invisible="1"/>                                    
-                            <field name="customer_target_amt" sum="Target Amount"/>
-                            <field name="customer_achieved_amt" sum="Achieved Amount"/>
-                            <button type="object" name="action_open_cus_achieved_entries" string="View"
-                                icon="fa-arrow-circle-o-right" />
-                        </tree>
-                    </field>
-                </page>
-            </xpath> -->
         </field>
     </record>
 
@@ -106,57 +87,4 @@
         parent="sale.menu_sale_config"
         action="action_customer_category"
         sequence="50"/>
-
-
-        <!-- <record model="ir.ui.view" id="customer_logistic_form">
-        <field name="name">Customer Logistic Timing Form</field>
-        <field name="model">customer.logistic.timing</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="name" required='1'/>
-                            <field name="company_id" invisible='1'/>
-                        </group>
-                        <group>
-                        </group>
-                    </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
-                </div>
-            </form>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="customer_logistic_tree">
-        <field name="name">Customer Logistic Timing Tree</field>
-        <field name="model">customer.logistic.timing</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="name"/>
-                <field name="company_id"/>
-            </tree>
-        </field>
-    </record>
-
-    <record id="action_customer_logistic_timing" model="ir.actions.act_window">
-        <field name="name">Customer Logistic Timing</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">customer.logistic.timing</field>
-        <field name="view_mode">tree,form</field>
-    </record> -->
-
-    <!-- Samm Customer -->
-
-    <!-- <menuitem 
-        id="customer_logistic_timing"
-        name="Customer Logistic Timing"
-        parent="sale.menu_sale_config"
-        action="action_customer_logistic_timing"
-        sequence="50"/> -->
-
-
 </odoo>
