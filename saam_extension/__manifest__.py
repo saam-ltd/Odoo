@@ -12,9 +12,9 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
-        'data/sequence.xml',
-        'data/mail_template.xml',
-        'data/ir_cron_data.xml',
+        # 'data/sequence.xml',
+        # 'data/mail_template.xml',
+        # 'data/ir_cron_data.xml',
         'views/custom_salesperson.xml',
         # 'views/target_flow.xml',
         'views/partner.xml',

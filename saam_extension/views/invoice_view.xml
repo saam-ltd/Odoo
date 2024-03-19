@@ -62,7 +62,7 @@
     </record>
 
     <!-- SKU Analysis - invoice  Lines view -->
-    <record model="ir.ui.view" id="view_account_move_line_inherit_sku">
+    <!-- <record model="ir.ui.view" id="view_account_move_line_inherit_sku">
         <field name="name">account.move.line.tree.inherit.sku</field>
         <field name="model">account.move.line</field>
         <field eval="10" name="priority"/>
@@ -80,7 +80,7 @@
                 <field name="custom_salesperson_id"/>
             </tree>
         </field>
-    </record>
+    </record> -->
 
     <!-- <record id="action_account_move_line_menu" model="ir.actions.act_window">
         <field name="name">SKU Analysis</field>
