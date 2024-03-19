@@ -9,13 +9,21 @@
         <field name="arch" type="xml">
             <field name="payment_term_id" position="after">
                 <field name="p_o_ref" attrs="{'readonly': [('state', 'in',('sale','done','cancel'))]}"/>
+                <!-- <field name="logistic_duration_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" readonly="1"/> -->
+                <field name="customer_category_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" readonly="1"/>
+                <field name="customer_remarks" readonly="1"/>
             </field>
             <field name="user_id" position="after">
                 <field name="custom_salesperson_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'readonly': [('state', 'in',('sale','done','cancel'))]}"/>
+                <field name="is_accessed_sp" invisible="1"/>
+                <field name="is_non_accessed_sp" invisible="1"/>
             </field>
-            <!-- <field name="date_order" position="attributes">
-                <attribute name="attrs">{'readonly': False}</attribute>
-            </field> -->
+            <xpath expr="//notebook/page[1]/field/tree/field[@name='name']" position="after">
+                <field name="prod_boxes" attrs="{'readonly': [('state', 'in',('sale','done','cancel'))]}"/>
+            </xpath>
+            <xpath expr="//notebook/page[1]/field/tree/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="attrs">{'readonly': [('parent.is_accessed_sp','=',True),('parent.is_non_accessed_sp','=',False)]}</attribute>
+            </xpath>
         </field>
     </record>
 
@@ -63,7 +71,7 @@
         </field>
     </record>
 
-    <record id="view_stock_form_inherit" model="ir.ui.view">
+    <!-- <record id="view_stock_form_inherit" model="ir.ui.view">
         <field name="name">picking.form.view.inherit</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
@@ -72,9 +80,5 @@
                 <attribute name="attrs">{'readonly': False}</attribute>
             </field>
         </field>
-    </record>
-
-
-
-
+    </record> -->
 </odoo>

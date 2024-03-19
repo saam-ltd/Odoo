@@ -1,5 +1,5 @@
 {
-    'name': 'Saam Extension',
+    'name': 'Samm Extension',
     'version': '15.0.1',
     'category': '',
     'summary': 'Saam Extension',
@@ -10,6 +10,7 @@
 
     'depends': ['base','product','sale_management','account', 'stock', 'sale'],
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/custom_salesperson.xml',
         'views/partner.xml',
@@ -19,6 +20,7 @@
         'views/sale_view.xml',
         'views/stock_view.xml',
     ],
+    
     'installable': True,
     'auto_install': False,
     'price': 110.00,

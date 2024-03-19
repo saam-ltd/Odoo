@@ -10,13 +10,14 @@
         <field name="arch" type="xml">
             <field name="vat" position="after">
                 <field name="brn"/>
-                <field name="custom_salesperson_id"/>
+                <field name="custom_salesperson_id" attrs="{'invisible': [('is_cus', '=',False)]}"/>
                 <field name="gl_code"/>
                 <field name="is_cus" invisible="1"/>
+                <field name="customer_category_id" attrs="{'invisible': [('is_cus', '=',False)]}"/>
+                <field name="cus_remarks" attrs="{'invisible': [('is_cus', '=',False)]}"/>
             </field>
         </field>
     </record>
-
 
     <!-- Over ridden base for adding an extra context -->
 
@@ -36,5 +37,54 @@
     </record>
 
 
+    <record model="ir.ui.view" id="customer_category_form">
+        <field name="name">Customer Category Form</field>
+        <field name="model">customer.catgeory</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" required='1'/>
+                            <field name="company_id" invisible='1'/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
 
+    <record model="ir.ui.view" id="customer_category_tree">
+        <field name="name">Customer category Tree</field>
+        <field name="model">customer.catgeory</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_customer_category" model="ir.actions.act_window">
+        <field name="name">Customer Category</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">customer.catgeory</field>
+        <!-- <field name="context">{'delete': 0}</field> -->
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Samm Customer -->
+
+    <menuitem 
+        id="customer_category"
+        name="Customer Category"
+        parent="sale.menu_sale_config"
+        action="action_customer_category"
+        sequence="50"/>
 </odoo>
