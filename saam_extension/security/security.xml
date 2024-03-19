@@ -32,28 +32,4 @@
         <field name="category_id" ref="module_custom_sales_person"/>
     </record>
 
-
-
-
-    <!-- Record Rules -->
-    <!-- <record id="target_flow_user_rules" model="ir.rule">
-        <field name="name">Target Tracking User rules</field>
-        <field name="model_id" ref="saam_extension.model_target_flow"/>
-        <field name="domain_force">[('linked_user_id','=',user.id),('state','=','confirm')]</field>
-        <field name="groups" eval="[(4, ref('group_target_flow_user'))]"/> 
-    </record>
-
-    <record id="target_flow_manager_rules" model="ir.rule">
-        <field name="name">Target Tracking Manager rules</field>
-        <field name="model_id" ref="saam_extension.model_target_flow"/>
-        <field name="domain_force">['|',('create_uid','=',user.id),('manager_id','=',user.id)]</field>
-        <field name="groups" eval="[(4, ref('group_target_flow_manager'))]"/>
-    </record>
-
-    <record id="target_flow_admin_rules" model="ir.rule">
-        <field name="name">Target Tracking Admin rules</field>
-        <field name="model_id" ref="saam_extension.model_target_flow"/>
-        <field name="domain_force">[]</field>
-        <field name="groups" eval="[(4, ref('group_target_flow_admin'))]"/>
-    </record> -->
 </odoo>

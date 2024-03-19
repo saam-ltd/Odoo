@@ -20,9 +20,9 @@ class CustomSalesperson(models.Model):
 	_sql_constraints = [('unique_code','UNIQUE(code)', 'Code already exist.')]
 
 
-class CustomSalespersonActivityLines(models.Model):
-	_name = 'custom.salesperson.activity.line'
-	_description = "Custom Salesperson Activity Line"
+# class CustomSalespersonActivityLines(models.Model):
+# 	_name = 'custom.salesperson.activity.line'
+# 	_description = "Custom Salesperson Activity Line"
 
 	# activity_id = fields.Many2one('custom.salesperson', 'Custom Salesperson')
 	# dayofweek = fields.Selection([
