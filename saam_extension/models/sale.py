@@ -12,8 +12,6 @@ class SaleOrder(models.Model):
         state: [('readonly', False)]
         for state in {'sale', 'done', 'cancel'}
     }
-
-    
     date_order = fields.Datetime(string="Order Date",states=CUSTOM_FIELD_STATES,copy=False, track_visibility="onchange")
     p_o_ref = fields.Char(string='Custom PO Reference')
     custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson.', tracking=2)
@@ -62,6 +60,19 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     prod_boxes = fields.Text(string='Boxes')
+
+    def create(self, vals):
+        res = super(SaleOrderLine,self).create(vals)
+        for line in res:
+            line.order_id.message_post(body=_("Product Boxes [%s] : %s", line.product_id.name, line.prod_boxes))
+        return res
+
+    def write(self, values):
+        if 'prod_boxes' in values:
+            self.order_id.message_post(body=_("Product Boxes [%s] : %s -> %s", self.product_id.name,self.prod_boxes,values['prod_boxes']))
+        result = super(SaleOrderLine, self).write(values)
+        return result
+
 
     def _prepare_invoice_line(self, **optional_values):
         values = super(SaleOrderLine, self)._prepare_invoice_line(**optional_values)
