@@ -33,8 +33,7 @@
                 <field name="prod_boxes" attrs="{'readonly': [('state', 'in',('done','cancel'))]}"/>
             </xpath>
             <xpath expr="//field[@name='scheduled_date']" position="attributes">
-                <attribute name="attrs">{'readonly': []}</attribute>
-                <!-- <attribute name="attrs">{'readonly': [('state', '!=', 'assigned'),('picking_type_code', '=', 'outgoing')]}</attribute> -->
+                <attribute name="attrs">{'readonly': [('state', '!=', 'assigned'),('picking_type_code', '=', 'outgoing')]}</attribute>
             </xpath>
         </field>
     </record>
