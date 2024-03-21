@@ -44,8 +44,8 @@ class Picking(models.Model):
 
     def _set_scheduled_date(self):
         for picking in self:
-            if picking.state in ('done', 'cancel'):
-                raise UserError(_("You cannot change the Scheduled Date on a done or cancelled transfer."))
+            # if picking.state in ('done', 'cancel'):
+            #     raise UserError(_("You cannot change the Scheduled Date on a done or cancelled transfer."))
             picking.move_lines.write({'date': picking.scheduled_date})
             if picking.picking_type_id.code == 'outgoing':
                 if picking.state == 'assigned':
