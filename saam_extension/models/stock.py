@@ -42,21 +42,39 @@ class Picking(models.Model):
         res = super(Picking, self).button_validate()
         return res
 
-    def _set_scheduled_date(self):
-        for picking in self:
-            if picking.state in ('done', 'cancel'):
-                raise UserError(_("You cannot change the Scheduled Date on a done or cancelled transfer."))
-            picking.move_lines.write({'date': picking.scheduled_date})
-            if picking.picking_type_id.code == 'outgoing':
-                if picking.state == 'assigned':
-                    if picking.del_schedule_status == 'not_scheduled':
-                        picking.del_schedule_status = 'scheduled'
-                    elif picking.del_schedule_status == 'scheduled':
-                        picking.del_schedule_status = 're_scheduled'
-                    elif picking.del_schedule_status == 're_scheduled':
-                        picking.del_schedule_status = 're_scheduled'
-                elif picking.state == 'cancel':
-                     picking.del_schedule_status = 'not_scheduled'
+
+
+    # def _set_scheduled_date(self):
+    #     for picking in self:
+    #         if picking.state in ('done', 'cancel'):
+    #             raise UserError(_("You cannot change the Scheduled Date on a done or cancelled transfer."))
+    #         picking.move_lines.write({'date': picking.scheduled_date})
+    #         if picking.picking_type_id.code == 'outgoing':
+    #             if picking.state == 'assigned':
+    #                 if picking.del_schedule_status == 'not_scheduled':
+    #                     picking.del_schedule_status = 'scheduled'
+    #                 elif picking.del_schedule_status == 'scheduled':
+    #                     picking.del_schedule_status = 're_scheduled'
+    #                 elif picking.del_schedule_status == 're_scheduled':
+    #                     picking.del_schedule_status = 're_scheduled'
+    #             elif picking.state == 'cancel':
+    #                  picking.del_schedule_status = 'not_scheduled'
+
+    # def _set_scheduled_date(self):
+    #     super(Picking, self)._set_scheduled_date()
+    #     print("2-----------------")
+    #     for picking in self:
+    #         if picking.picking_type_id.code == 'outgoing':
+    #             if picking.state == 'assigned':
+    #                 if picking.del_schedule_status == 'not_scheduled':
+    #                     picking.del_schedule_status = 'scheduled'
+    #                 elif picking.del_schedule_status == 'scheduled':
+    #                     picking.del_schedule_status = 're_scheduled'
+    #                 elif picking.del_schedule_status == 're_scheduled':
+    #                     picking.del_schedule_status = 're_scheduled'
+    #             elif picking.state == 'cancel':
+    #                  picking.del_schedule_status = 'not_scheduled'
+    #     return True
 
     def _action_done(self):
         """Call `_action_done` on the `stock.move` of the `stock.picking` in `self`.
