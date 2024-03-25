@@ -105,4 +105,15 @@ class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
     prod_boxes = fields.Text(related='move_id.prod_boxes',string='Boxes')
-    
+
+
+class SaleAdvancePaymentInv(models.TransientModel):
+    _inherit = "sale.advance.payment.inv"
+
+    def create_invoices(self):
+        sale_orders = self.env['sale.order'].browse(self._context.get('active_ids', []))
+        for order in sale_orders:
+            if order.is_accessed_sp and not order.is_non_accessed_sp:
+                raise UserError("You are not allowed to create the Invoice")
+        invoice = super(SaleAdvancePaymentInv, self).create_invoices()
+        return invoice

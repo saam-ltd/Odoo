@@ -42,8 +42,6 @@ class Picking(models.Model):
         res = super(Picking, self).button_validate()
         return res
 
-
-
     def _set_scheduled_date(self):
         for picking in self:
             # if picking.state in ('done', 'cancel'):
