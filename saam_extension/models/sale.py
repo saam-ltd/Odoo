@@ -39,7 +39,7 @@ class SaleOrder(models.Model):
     def action_confirm(self):
         res = super(SaleOrder,self).action_confirm()
         if self.is_accessed_sp and not self.is_non_accessed_sp:
-            raise UserError("You are not allowed to confirm the SO")
+            raise UserError("You are not allowed to confirm the Sale Order. Please contact system admin.")
         return res
 
     def _prepare_invoice(self):
@@ -114,6 +114,6 @@ class SaleAdvancePaymentInv(models.TransientModel):
         sale_orders = self.env['sale.order'].browse(self._context.get('active_ids', []))
         for order in sale_orders:
             if order.is_accessed_sp and not order.is_non_accessed_sp:
-                raise UserError("You are not allowed to create the Invoice")
+                raise UserError("You are not allowed to create the Invoice. Please contact system admin.")
         invoice = super(SaleAdvancePaymentInv, self).create_invoices()
         return invoice
