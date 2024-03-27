@@ -20,6 +20,8 @@ class Menu(models.Model):
             menus.discard(335)
         if self.env.user.has_group('kg_hide_menu.group_account_vendors'):
             menus.discard(123)
+        if self.env.user.has_group('kg_hide_menu.group_hide_inv_overview_salesperson'):
+            menus.discard(297)
         if self.env.user.hide_menu_access_ids:
             for rec in self.env.user.hide_menu_access_ids:
                 menus.discard(rec.id)
