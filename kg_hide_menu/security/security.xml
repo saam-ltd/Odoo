@@ -29,7 +29,7 @@
     </record>
 
     <record id="group_hide_inv_overview_salesperson" model="res.groups">
-        <field name="name">Inventory Overview for Salesperson - Enable only Delivery,Return</field>
+        <field name="name">Enable only Delivery and Return</field>
         <field name="category_id" ref="module_inv_overview_salesperson"/>
     </record>
 
