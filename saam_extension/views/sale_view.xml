@@ -19,7 +19,7 @@
                 <field name="is_non_accessed_sp" invisible="1"/>
             </field>
             <xpath expr="//notebook/page[1]/field/tree/field[@name='name']" position="after">
-                <field name="prod_boxes" attrs="{'readonly': [('state', 'in',('sale','done','cancel'))]}"/>
+                <field name="prod_boxes" attrs="{'readonly': [('state', 'in',('sale','done','cancel'))]}" string="Orders"/>
             </xpath>
             <xpath expr="//notebook/page[1]/field/tree/field[@name='product_uom_qty']" position="attributes">
                 <attribute name="attrs">{'readonly': [('parent.is_accessed_sp','=',True),('parent.is_non_accessed_sp','=',False)]}</attribute>
