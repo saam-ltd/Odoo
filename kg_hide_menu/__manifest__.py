@@ -22,8 +22,6 @@
     'depends': [
         'base'
     ],
-    'data': [
-        'security/security.xml',
-        'views/res_users.xml',
+    'data': ['views/res_users.xml',
              ],
 }
