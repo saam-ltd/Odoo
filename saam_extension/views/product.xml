@@ -1,51 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!-- Product Template, Product Product View Inherit - Form -->
 
-    <record id="view_product_template_form_inherit_hide" model="ir.ui.view">
-        <field name="name">product.templete.form.view.inherit.hide</field>
+    <!-- Product Template View Inherit -->
+
+    <record id="view_product_template_form_inherit" model="ir.ui.view">
+        <field name="name">product.templete.form.view.inherit</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
-            <field name="currency_id" position="after">
-                <field name="scale_code"/> 
-                <field name="is_product_cost_hide" invisible="1"/>
+            <field name="barcode" position="after">
+                <field name="scale_code"/>
             </field>
-            <xpath expr="//label[@for='standard_price']" position="attributes">
-                <attribute name="attrs">{'invisible': [('is_product_cost_hide','=',True)]}</attribute>
-            </xpath>
-            <xpath expr="//div[@name='standard_price_uom']" position="attributes">
-                <attribute name="attrs">{'invisible': [('is_product_cost_hide','=',True)]}</attribute>
-            </xpath>
-        </field>
-    </record>
-
-    <!-- Product Template, Product Product View Inherit - Tree -->
-    <record id="product_template_tree_view_hide_cost_inherit" model="ir.ui.view">
-        <field name="name">product.template.tree.view.inherit.cost</field>
-        <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_tree_view"/>
-        <field name="groups_id"
-               eval="[(6, 0, [ref('saam_extension.group_hide_product_cost')])]"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='standard_price']" position="attributes">
-                <attribute name="invisible">True</attribute>
-                <attribute name="attrs">{'invisible': [('is_product_cost_hide', '=', 'True')]}</attribute>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="view_product_product_tree_inherit_cost_hide" model="ir.ui.view">
-        <field name="name">product.product.tree.view.inherit.cost</field>
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_product_tree_view"/>
-        <field name="groups_id"
-               eval="[(6, 0, [ref('saam_extension.group_hide_product_cost')])]"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='standard_price']" position="attributes">
-                <attribute name="invisible">True</attribute>
-                <attribute name="attrs">{'invisible': [('is_product_cost_hide', '=', 'True')]}</attribute>
-            </xpath>
         </field>
     </record>
 </odoo>
