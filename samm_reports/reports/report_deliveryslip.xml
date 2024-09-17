@@ -59,10 +59,12 @@
                                 <div t-if="o.state" class="col-auto" name="div_sched_date">
                                     <strong>DATE:</strong>
                                     <t t-if="o.state == 'done'">
-                                        <span t-field="o.date_done" t-options='{"widget": "date"}'/>
+                                        <!-- <span t-field="o.date_done" t-options='{"widget": "date"}'/> -->
+                                        <span t-esc="(o.date_done + relativedelta(hours=5, minutes=30))" t-options='{"widget": "date"}'/>
                                     </t>
                                     <t t-if="o.state != 'done'">
-                                        <span t-field="o.scheduled_date" t-options='{"widget": "date"}'/>
+                                        <!-- <span t-field="o.scheduled_date" t-options='{"widget": "date"}'/> -->
+                                        <span t-esc="(o.scheduled_date + relativedelta(hours=5, minutes=30))" t-options='{"widget": "date"}'/>
                                    </t>
                                 </div>
                                 <div class="col-auto" name="div_salesman" >
