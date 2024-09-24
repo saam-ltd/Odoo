@@ -233,6 +233,9 @@
             <t t-if="doc.company_id.phone">
                 <b><span t-esc="doc.company_id.phone"/></b><br/>
             </t>
+            <t t-if="doc.company_id.mobile">
+                <b><span t-esc="doc.company_id.mobile"/></b><br/>
+            </t>
             <t t-if="doc.company_id.email">
                 <b><span t-esc="doc.company_id.email"/></b><br/>
             </t>
