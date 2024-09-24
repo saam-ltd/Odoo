@@ -15,12 +15,16 @@
                                     <span><strong>DELIVERY ADDRESS:</strong></span>
                                     <div t-field="o.move_ids_without_package[0].partner_id"
                                         t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                                        <t t-if="o.partner_id.mobile"><b>MOBILE:</b>
+                                            <span t-field="o.partner_id.mobile"/><br/></t>
                                         <b>VAT:</b> <span t-esc="o.partner_id.vat"/><b>|</b><b>BRN: </b><span t-esc="o.partner_id.brn"/>
                                 </div>
                                 <div t-if="o.picking_type_id.code != 'internal' and (not o.move_ids_without_package or not o.move_ids_without_package[0].partner_id) and o.picking_type_id.warehouse_id.partner_id">
                                     <span><strong>WAREHOURSE ADDRESS:</strong></span>
                                     <div t-field="o.picking_type_id.warehouse_id.partner_id"
                                         t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                                        <t t-if="o.partner_id.mobile"><b>MOBILE:</b>
+                                            <span t-field="o.partner_id.mobile"/><br/></t>
                                 </div>
                             </div>
                         <!-- </t> -->
@@ -38,6 +42,8 @@
                                     <div t-if="partner" name="partner_header">
                                         <div t-field="partner.commercial_partner_id"
                                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                                            <t t-if="o.partner_id.mobile"><b>MOBILE:</b>
+                                                <span t-field="o.partner_id.mobile"/><br/></t>
                                         <!-- <p t-if="partner.sudo().commercial_partner_id.vat"><t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="partner.sudo().commercial_partner_id.vat"/></p> -->
                                         <b>VAT:</b> <span t-esc="o.partner_id.vat"/><b>|</b><b>BRN: </b><span t-esc="o.partner_id.brn"/>
                                     </div>

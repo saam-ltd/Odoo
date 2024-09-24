@@ -29,7 +29,8 @@
 
                             <t t-if="o.partner_id.phone"><b>TEL:</b>
                             <span t-field="o.partner_id.phone"/><br/></t>
-
+                            <t t-if="o.partner_id.mobile"><b>MOBILE:</b>
+                            <span t-field="o.partner_id.mobile"/><br/></t>
                             <t t-if="o.partner_id.vat"><b>VAT:</b>
                             <span t-field="o.partner_id.vat"/></t>&#xA0;<t t-if="o.partner_id.brn"><b>BRN:</b><span t-field="o.partner_id.brn"/></t>
                         </div>
