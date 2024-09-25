@@ -45,7 +45,9 @@
                     <span t-field="doc.partner_id"
                         t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
                     <t t-if="doc.partner_id.phone"><b>TEL:</b>
-                            <span t-field="doc.partner_id.phone"/></t><br/>
+                            <span t-field="doc.partner_id.phone"/><br/></t>
+                    <t t-if="doc.partner_id.mobile"><b>MOBILE:</b>
+                            <span t-field="doc.partner_id.mobile"/><br/></t>
                 </div>
                 <div class="col-6">
                     <t t-if="doc.date_order and doc.state not in ['draft','sent']" >
@@ -232,6 +234,9 @@
             </t>
             <t t-if="doc.company_id.phone">
                 <b><span t-esc="doc.company_id.phone"/></b><br/>
+            </t>
+            <t t-if="doc.company_id.mobile">
+                <b><span t-esc="doc.company_id.mobile"/></b><br/>
             </t>
             <t t-if="doc.company_id.email">
                 <b><span t-esc="doc.company_id.email"/></b><br/>

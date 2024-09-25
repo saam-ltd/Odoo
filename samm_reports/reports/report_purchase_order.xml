@@ -16,6 +16,8 @@
                 <div t-if="o.dest_address_id">
                     <div t-field="o.dest_address_id"
                         t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}' name="purchase_shipping_address"/>
+                    <t t-if="o.partner_id.mobile"><b>MOBILE:</b>
+                    <span t-field="o.partner_id.mobile"/><br/></t>
                 </div>
 
             </t>
@@ -33,7 +35,9 @@
                         <span t-field="o.partner_id"
                             t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
                         <t t-if="o.partner_id.phone"><b>TEL:</b>
-                                <span t-field="o.partner_id.phone"/></t><br/>
+                                <span t-field="o.partner_id.phone"/><br/></t>
+                        <t t-if="o.partner_id.mobile"><b>MOBILE:</b>
+                                            <span t-field="o.partner_id.mobile"/><br/></t>
                     </div>
                     <div class="col-6">
                         <strong>ORDER DATE:</strong>
@@ -172,6 +176,9 @@
             </t>
             <t t-if="o.company_id.phone">
                 <b><span t-esc="o.company_id.phone"/></b><br/>
+            </t>
+            <t t-if="o.company_id.mobile">
+                <b><span t-esc="o.company_id.mobile"/></b><br/>
             </t>
             <t t-if="o.company_id.email">
                 <b><span t-esc="o.company_id.email"/></b><br/>
