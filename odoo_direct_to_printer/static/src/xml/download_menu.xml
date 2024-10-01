@@ -1,0 +1,12 @@
+<templates>
+    <t t-inherit="web.ActionMenus" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o_cp_action_menus')]/DropdownMenu[@items='printItems']" position="after">
+            <DropdownMenu t-if="printItems.length"
+                          class="odoo_direct_to_printer"
+                          title="env._t('Download')"
+                          items="printItems"
+                          icon="'fa fa-download'"
+            />
+        </xpath>
+    </t>
+</templates>
