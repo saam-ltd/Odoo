@@ -39,7 +39,7 @@ class SaleOrder(models.Model):
     def action_confirm(self):
         res = super(SaleOrder,self).action_confirm()
         if self.is_accessed_sp and not self.is_non_accessed_sp:
-            raise UserError("You are not allowed to confirm the SO")
+            raise UserError("You are not allowed to confirm the Sale Order. Please contact system admin.")
         return res
 
     def _prepare_invoice(self):
