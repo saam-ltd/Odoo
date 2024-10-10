@@ -26,6 +26,10 @@
                 <field name="prod_boxes"  attrs="{'column_invisible': [('parent.move_type', 'not in',['out_invoice','out_refund'])],'readonly': [('parent.state', '!=','draft')]}" string="Orders"/>
             </xpath>
 
+            <xpath expr="//notebook/page[1]/field/form/sheet/group/field[@name='product_id']" position="after">
+                <field name="prod_boxes"  attrs="{'column_invisible': [('parent.move_type', 'not in',['out_invoice','out_refund'])],'readonly': [('parent.state', '!=','draft')]}" string="Orders"/>
+            </xpath>
+
             <xpath expr="//notebook/page[2]/field/tree/field[@name='account_id']" position="after">
                <field name="bill_item_code" invisible="1"/>
             </xpath>
