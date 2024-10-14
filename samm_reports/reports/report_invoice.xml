@@ -74,6 +74,11 @@
                             <strong>PAYMENT TERMS: </strong><span t-field="o.invoice_payment_term_id.name"/>
                         </div>
                     </div>
+                    <div id="custom_po_reference" class="row mt-4 mb-4">
+                        <div class="col-auto col-3 mw-100 mb-2" t-if="o.p_o_ref" name="custom_po_reference">
+                            <strong>CUSTOM PO REFERENCE: </strong><span t-field="o.p_o_ref"/>
+                        </div>
+                    </div>
 
                     <t t-set="display_discount" t-value="any(l.discount for l in o.invoice_line_ids)"/>
 
