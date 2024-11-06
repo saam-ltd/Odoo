@@ -3,14 +3,14 @@
 # © 2016 ACSONE SA/NV (<http://acsone.eu>)
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 {
-    "name": "Purchase order lines with discount New Patch",
+    "name": "Purchase order lines with discounts",
     "author": "Tiny, "
     "Acysos S.L., "
     "Tecnativa, "
     "ACSONE SA/NV,"
     "GRAP,"
     "Odoo Community Association (OCA)",
-    "version": "15.0.1.2.0",
+    "version": "15.0.2.0.2",
     "category": "Purchase Management",
     "website": "https://github.com/OCA/purchase-workflow",
     "depends": ["purchase_stock"],
@@ -19,6 +19,7 @@
         "views/report_purchaseorder.xml",
         "views/product_supplierinfo_view.xml",
         "views/res_partner_view.xml",
+        "views/res_config_view.xml",
     ],
     "license": "AGPL-3",
     "installable": True,

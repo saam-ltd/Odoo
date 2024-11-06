@@ -3,13 +3,23 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import fields
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import Form, TransactionCase
 
 
 class TestProductSupplierinfoDiscount(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        # Remove this variable in v16 and put instead:
+        # from odoo.addons.base.tests.common import DISABLED_MAIL_CONTEXT
+        DISABLED_MAIL_CONTEXT = {
+            "tracking_disable": True,
+            "mail_create_nolog": True,
+            "mail_create_nosubscribe": True,
+            "mail_notrack": True,
+            "no_reset_password": True,
+        }
+        cls.env = cls.env(context=dict(cls.env.context, **DISABLED_MAIL_CONTEXT))
         cls.supplierinfo_model = cls.env["product.supplierinfo"]
         cls.purchase_order_line_model = cls.env["purchase.order.line"]
         cls.partner_1 = cls.env.ref("base.res_partner_1")
@@ -27,10 +37,10 @@ class TestProductSupplierinfoDiscount(TransactionCase):
             {
                 "min_qty": 10.0,
                 "name": cls.partner_3.id,
-                "product_tmpl_id": cls.product.product_tmpl_id.id,
                 "discount": 20,
             }
         )
+        cls.supplierinfo2["product_tmpl_id"] = cls.product.product_tmpl_id
         cls.purchase_order = cls.env["purchase.order"].create(
             {"partner_id": cls.partner_3.id}
         )
@@ -161,3 +171,60 @@ class TestProductSupplierinfoDiscount(TransactionCase):
         self.assertEqual(order.order_line.move_ids.price_unit, 6)
         order.order_line.price_unit = 100
         self.assertEqual(order.order_line.move_ids.price_unit, 60)
+
+    def test_008_no_seller_purchase_supplier_discount_real_disabled(self):
+        """
+        Tests that if the quantity of a product is below the supplier's minimum quantity,
+        and the checkbow 'Show Only Purchase Supplier Discount' is disabled,
+        the discounts are kept in the purchase line.
+        """
+        self.product.seller_ids.unlink()
+        self.supplierinfo_model.create(
+            {
+                "min_qty": 10.0,
+                "name": self.partner_3.id,
+                "product_tmpl_id": self.product.product_tmpl_id.id,
+                "discount": 20.00,
+            }
+        )
+        purchase_order = Form(self.env["purchase.order"])
+        purchase_order.partner_id = self.partner_3
+        purchase_order = purchase_order.save()
+        purchase_order.company_id.purchase_supplier_discount_real = False
+        with Form(purchase_order) as po:
+            with po.order_line.new() as line:
+                line.product_id = self.product
+                line.product_qty = 1
+        self.assertEqual(purchase_order.order_line[0].discount, 20.00)
+
+    def test_009_no_seller_purchase_supplier_discount_real_enabled(self):
+        """
+        Tests that if the quantity of a product is below the supplier's minimum quantity,
+        the checkbow 'Show Only Purchase Supplier Discount' is enabled and
+        purchase_order_general_discount module is not installed,
+        the discounts is set to 0.00 in the purchase line.
+        """
+        if not self.env["ir.module.module"].search(
+            [
+                ("name", "=", "purchase_order_general_discount"),
+                ("state", "=", "installed"),
+            ]
+        ):
+            self.product.seller_ids.unlink()
+            self.supplierinfo_model.create(
+                {
+                    "min_qty": 10.0,
+                    "name": self.partner_3.id,
+                    "product_tmpl_id": self.product.product_tmpl_id.id,
+                    "discount": 20.00,
+                }
+            )
+            purchase_order = Form(self.env["purchase.order"])
+            purchase_order.partner_id = self.partner_3
+            purchase_order = purchase_order.save()
+            purchase_order.company_id.purchase_supplier_discount_real = True
+            with Form(purchase_order) as po:
+                with po.order_line.new() as line:
+                    line.product_id = self.product
+                    line.product_qty = 1
+            self.assertEqual(purchase_order.order_line[0].discount, 0.00)

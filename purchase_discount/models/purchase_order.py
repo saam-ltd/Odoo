@@ -10,16 +10,10 @@ from odoo import api, fields, models
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
-    def _add_supplier_to_product(self):
-        """Insert a mapping of products to PO lines to be picked up
-        in supplierinfo's create()"""
-        self.ensure_one()
-        po_line_map = {
-            line.product_id.product_tmpl_id.id: line for line in self.order_line
-        }
-        return super(
-            PurchaseOrder, self.with_context(po_line_map=po_line_map)
-        )._add_supplier_to_product()
+    def _prepare_supplier_info(self, partner, line, price, currency):
+        vals = super()._prepare_supplier_info(partner, line, price, currency)
+        vals["discount"] = line.discount
+        return vals
 
 
 class PurchaseOrderLine(models.Model):
@@ -57,31 +51,6 @@ class PurchaseOrderLine(models.Model):
             return self.price_unit * (1 - self.discount / 100)
         return self.price_unit
 
-    def _get_stock_move_price_unit(self):
-        """Get correct price with discount replacing current price_unit
-        value before calling super and restoring it later for assuring
-        maximum inheritability.
-
-        HACK: This is needed while https://github.com/odoo/odoo/pull/29983
-        is not merged.
-        """
-        # Use 'skip_update_price_unit' context key to avoid infinite
-        # recursion. Updating the price_unit field here triggers the
-        # 'write' method of 'purchase.order.line' in stock_account
-        # module which triggers this method again.
-        if self.env.context.get("skip_update_price_unit"):
-            return super()._get_stock_move_price_unit()
-        price_unit = False
-        price = self._get_discounted_price_unit()
-        if price != self.price_unit:
-            # Only change value if it's different
-            price_unit = self.price_unit
-            self.with_context(skip_update_price_unit=True).price_unit = price
-        price = super()._get_stock_move_price_unit()
-        if price_unit:
-            self.with_context(skip_update_price_unit=True).price_unit = price_unit
-        return price
-
     @api.onchange("product_qty", "product_uom")
     def _onchange_quantity(self):
         """
@@ -106,9 +75,10 @@ class PurchaseOrderLine(models.Model):
     def _apply_value_from_seller(self, seller):
         """Overload this function to prepare other data from seller,
         like in purchase_triple_discount module"""
-        if not seller:
+        discount = seller.discount if seller else 0.00
+        if not seller and not self.company_id.purchase_supplier_discount_real:
             return
-        self.discount = seller.discount
+        self.discount = discount
 
     def _prepare_account_move_line(self, move=False):
         vals = super(PurchaseOrderLine, self)._prepare_account_move_line(move)
