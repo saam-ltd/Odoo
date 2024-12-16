@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Odoo Direct Print to Printer',
-    'version': '16.0',
+    'version': '18.0.1.0.0',
     'category': 'Generic Modules',
     'summary': 'Odoo Direct Print to Printer',
 
@@ -11,9 +11,9 @@
     ],
 
     'assets': {
-        'web.assets_backend': [
-            'odoo_direct_to_printer/static/src/js/*.js'
-        ],
+        # 'web.assets_backend': [
+        #     'odoo_direct_to_printer/static/src/js/*.js'
+        # ],
         'web.assets_common': [
             'odoo_direct_to_printer/static/src/css/print_min.css',
         ],

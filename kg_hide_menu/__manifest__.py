@@ -17,13 +17,11 @@
     'website': "https://www.klystronglobal.com/",
     'images': ["static/description/banner.png"],
     'category': 'Extra Rights',
-    'version': "15.0.1.0.0",
+    'version': "18.0.1.0.0",
     'license': 'AGPL-3',
     'depends': [
         'base'
     ],
-    'data': [
-        'security/security.xml',
-        'views/res_users.xml',
+    'data': ['views/res_users.xml',
              ],
 }

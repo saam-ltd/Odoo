@@ -7,36 +7,37 @@
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
 
-            <button name="action_toggle_is_locked" position="after">
-                <button name="action_update_del_status_scan" string="Scan" type="object" class="oe_highlight"  attrs="{'invisible': ['|',('state', '!=','done'),('del_schedule_status', '=','scanned')]}"/>
+            <button name="action_cancel" position="before">
+                <button name="action_update_del_status_scan" string="Scan" type="object" class="oe_highlight"  invisible="state != 'done' or del_schedule_status == 'scanned' "/>
             </button>
 
             <xpath expr="//div[@name='button_box']" position="after">
-               <widget name="web_ribbon" text="Scheduled" bg_color="bg-success" attrs="{'invisible': [('del_schedule_status', '!=','scheduled')]}"/>
-               <widget name="web_ribbon" text="Re-Scheduled" bg_color="bg-success" attrs="{'invisible': [('del_schedule_status', '!=','re_scheduled')]}"/>
-               <widget name="web_ribbon" text="Scanned" bg_color="bg-success" attrs="{'invisible': [('del_schedule_status', '!=','scanned')]}"/>
+               <widget name="web_ribbon" text="Scheduled" bg_color="bg-success" invisible="del_schedule_status != 'scheduled'" />
+               <widget name="web_ribbon" text="Re-Scheduled" bg_color="bg-success" invisible="del_schedule_status != 'scheduled'"/>
+               <widget name="web_ribbon" text="Scanned" bg_color="bg-success" invisible="del_schedule_status != 'scheduled'"/>
             </xpath>
 
             <field name="origin" position="after">
-                <field name="p_o_ref" readonly="1" attrs="{'invisible': [('p_o_ref', '=',False)]}"/>
+                <field name="p_o_ref" readonly="1" invisible="not p_o_ref"/>
                 <field name="del_schedule_status" readonly="1" invisible="1"/>
                 <!-- <field name="is_sch_resch" readonly="1"/> -->
                 <!-- <field name="is_date_updated"/> -->
             </field>
             <field name="user_id" position="after">
-                <field name="custom_salesperson_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'readonly': [('state', 'in',('done','cancel'))]}"/>
+                <field name="custom_salesperson_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" readonly="state in ('done','cancel')" />
                 <!-- <field name="logistic_duration_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'readonly': [('state', 'in',('done','cancel'))]}"/> -->
-                <field name="customer_category_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" attrs="{'readonly': [('state', 'in',('done','cancel'))]}"/>
-                <field name="customer_remarks" attrs="{'readonly': [('state', 'in',('done','cancel'))]}"/>
+                <field name="customer_category_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" readonly="state in ('done','cancel')"/>
+                <field name="customer_remarks" readonly="state in ('done','cancel')"/>
             </field>
-            <xpath expr="//notebook/page[2]/field/tree/field[@name='product_id']" position="after">
-                <field name="prod_boxes" attrs="{'readonly': [('state', 'in',('done','cancel'))]}" string="Orders"/>
+            <xpath expr="//notebook/page[1]/field/list/field[@name='product_id']" position="after">
+                <field name="prod_boxes" readonly="state in ('done','cancel')" string="Orders"/>
             </xpath>
-            <xpath expr="//notebook/page[2]/field/form/group/field[@name='product_id']" position="after">
+            <!-- Commented on dec -->
+            <!-- <xpath expr="//notebook/page[1]/field/form/group/field[@name='product_id']" position="after">
                 <field name="prod_boxes" attrs="{'readonly': [('state', 'in',('done','cancel'))]}" string="Orders"/>
-            </xpath>
+            </xpath> -->
             <xpath expr="//field[@name='scheduled_date']" position="attributes">
-                <attribute name="attrs">{'readonly': [('state', '!=', 'assigned'),('picking_type_code', '=', 'outgoing')]}</attribute>
+                <attribute name="attributes">{'readonly': [('state', '!=', 'assigned'),('picking_type_code', '=', 'outgoing')]}</attribute>
             </xpath>
         </field>
     </record>
@@ -47,7 +48,7 @@
         <field name="inherit_id" ref="stock.view_stock_move_line_detailed_operation_tree"/>
         <field name="arch" type="xml">
              <field name="product_id" position="after">
-                <field name="prod_boxes" attrs="{'readonly': [('state', 'in',('done','cancel'))]}" string="Orders"/>
+                <field name="prod_boxes" readonly="state in ('done','cancel')" string="Orders"/>
             </field>
         </field>
     </record> 
@@ -58,7 +59,7 @@
         <field name="inherit_id" ref="stock.view_move_line_form"/>
         <field name="arch" type="xml">
              <field name="product_id" position="after">
-                <field name="prod_boxes" attrs="{'readonly': [('state', 'in',('done','cancel'))]}" string="Orders"/>
+                <field name="prod_boxes" readonly="state in ('done','cancel')" string="Orders"/>
             </field>
         </field>
     </record> 

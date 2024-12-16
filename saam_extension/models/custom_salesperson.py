@@ -9,11 +9,11 @@ class CustomSalesperson(models.Model):
 	_inherit = ['portal.mixin','mail.thread', 'mail.activity.mixin']
 	_order = 'id desc'
 
-	name = fields.Char(string='Salesperson', track_visibility="onchange")
+	name = fields.Char(string='Salesperson',  tracking=True)
 	active = fields.Boolean(string='Archive', default=True)
-	code = fields.Char(string='code', track_visibility="onchange")
+	code = fields.Char(string='code',  tracking=True)
 	company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
-	manager_id = fields.Many2one('res.users', string="Manager", tracking=2)
-	linked_user_id = fields.Many2one('res.users', string="Linked User", tracking=2)
+	manager_id = fields.Many2one('res.users', string="Manager",  tracking=True)
+	linked_user_id = fields.Many2one('res.users', string="Linked User",  tracking=True)
 
 	_sql_constraints = [('unique_code','UNIQUE(code)', 'Code already exist.')]

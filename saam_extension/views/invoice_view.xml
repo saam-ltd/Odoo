@@ -8,29 +8,31 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <field name="payment_reference" position="after">
-                <field name="p_o_ref" attrs="{'invisible': [('move_type', 'not in',('out_invoice','out_refund'))], 'readonly': [('state', 'in',('posted','cancel'))]}"/>
+                <field name="p_o_ref" invisible="move_type not in ('out_invoice','out_refund')" readonly="state in ('posted','cancel')"/>
             </field>
             <field name="invoice_user_id" position="after">
-                <field name="custom_salesperson_id" attrs="{'invisible': [('move_type', 'not in',('out_invoice','out_refund'))], 'readonly': [('state', 'in',('posted','cancel'))]}" options="{'no_create': True, 'no_edit': True, 'no_open': True}" />
+                <field name="custom_salesperson_id" invisible="move_type not in ('out_invoice','out_refund')" readonly="state in ('posted','cancel')" options="{'no_create': True, 'no_edit': True, 'no_open': True}" />
                 <!-- 'readonly': [('state', 'in',('posted','cancel'))] -->
                 <!-- <field name="logistic_duration_id" attrs="{'invisible': [('move_type', 'not in',('out_invoice','out_refund'))], 'readonly': [('state', 'in',('posted','cancel'))]}" options="{'no_create': True, 'no_edit': True, 'no_open': True}" /> -->
-                <field name="customer_category_id" attrs="{'invisible': [('move_type', 'not in',('out_invoice','out_refund'))], 'readonly': [('state', 'in',('posted','cancel'))]}" options="{'no_create': True, 'no_edit': True, 'no_open': True}" />
-                <field name="customer_remarks" attrs="{'invisible': [('move_type', 'not in',('out_invoice','out_refund'))], 'readonly': [('state', 'in',('posted','cancel'))]}"/>
+                <field name="customer_category_id" invisible="move_type not in ('out_invoice','out_refund')" readonly="state in ('posted','cancel')" options="{'no_create': True, 'no_edit': True, 'no_open': True}"  />
+                <field name="customer_remarks" invisible="move_type not in ('out_invoice','out_refund')" readonly="state in ('posted','cancel')" options="{'no_create': True, 'no_edit': True, 'no_open': True}" />
             </field>
 
-            <xpath expr="//notebook/page[1]/field/tree/field[@name='product_id']" position="after">
-               <field name="bill_item_code" attrs="{'column_invisible': [('parent.move_type', 'not in',['in_invoice','in_refund','in_receipt'])],'readonly': [('parent.state', '!=','draft')]}"/>
+            <xpath expr="//notebook/page[1]/field/list/field[@name='product_id']" position="after">
+               <field name="bill_item_code" column_invisible="parent.move_type not in ('in_invoice','in_refund','in_receipt')" readonly="parent.state != 'draft'"/>
+
             </xpath>
 
-            <xpath expr="//notebook/page[1]/field/tree/field[@name='name']" position="after">
-                <field name="prod_boxes"  attrs="{'column_invisible': [('parent.move_type', 'not in',['out_invoice','out_refund'])],'readonly': [('parent.state', '!=','draft')]}" string="Orders"/>
+            <xpath expr="//notebook/page[1]/field/list/field[@name='name']" position="after">
+
+                <field name="prod_boxes" column_invisible="parent.move_type not in ('out_invoice','out_refund')" readonly="parent.state != 'draft'" string="Orders"/>
             </xpath>
 
             <xpath expr="//notebook/page[1]/field/form/sheet/group/field[@name='product_id']" position="after">
-                <field name="prod_boxes"  attrs="{'column_invisible': [('parent.move_type', 'not in',['out_invoice','out_refund'])],'readonly': [('parent.state', '!=','draft')]}" string="Orders"/>
+                <field name="prod_boxes"  column_invisible="parent.move_type not in ('out_invoice','out_refund')" readonly="parent.state != 'draft'" string="Orders"/>
             </xpath>
 
-            <xpath expr="//notebook/page[2]/field/tree/field[@name='account_id']" position="after">
+            <xpath expr="//notebook/page[2]/field/list/field[@name='account_id']" position="after">
                <field name="bill_item_code" invisible="1"/>
             </xpath>
 
@@ -38,7 +40,8 @@
     </record>
 
     <!-- Invoice Tree View Inherit -->
-    <record id="view_out_invoice_tree_inherit" model="ir.ui.view">
+    <!-- commented on dec -->
+    <!-- <record id="view_out_invoice_tree_inherit" model="ir.ui.view">
         <field name="name">account.move.tree.view.inherit</field>
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_out_invoice_tree"/>
@@ -47,7 +50,7 @@
                 <field name="custom_salesperson_id"/>
             </xpath>
         </field>
-    </record>
+    </record> -->
 
     <!-- Invoice View - Search view inherit -->
     <record id="view_account_invoice_filter_inheirt" model="ir.ui.view">

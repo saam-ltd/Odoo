@@ -5,8 +5,8 @@ from odoo.exceptions import UserError, AccessError,ValidationError
 class ResPartner(models.Model):
 	_inherit = 'res.partner'
 
-	brn = fields.Char(string='Business Registration Number',copy=False,tracking=True)
-	custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson', track_visibility="onchange")
+	brn = fields.Char(string='Business Registration Number',copy=False, tracking=True)
+	custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson', tracking=True)
 	customer_category_id = fields.Many2one('customer.catgeory',string='Customer Category',copy=False)
 	# customer_logistic_id = fields.Many2one('customer.logistic.timing',string='Logistic Timing',copy=False)
 	gl_code = fields.Char(string='Gl Code',copy=False,tracking=True)

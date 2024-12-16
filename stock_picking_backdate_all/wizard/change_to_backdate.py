@@ -10,10 +10,9 @@ _logger = logging.getLogger(__name__)
 class StockPickingInherit(models.Model):
     _inherit = 'stock.picking'
 
-    # def _set_scheduled_date(self):
-    #     for picking in self:
-    #         picking.move_lines.write({'date': picking.scheduled_date})
-
+    def _set_scheduled_date(self):
+        for picking in self:
+            picking.move_ids.write({'date': picking.scheduled_date})
 
 class PickingBackDate(models.TransientModel):
     _name = 'stock.picking.backdate.wiz'

@@ -1,6 +1,6 @@
 {
-    'name': 'Samm Extension - odoo',
-    'version': '15.0.1',
+    'name': 'Samm Extension',
+    'version': '18.0.1.0.0',
     'category': '',
     'summary': 'Saam Extension',
     

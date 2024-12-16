@@ -12,12 +12,12 @@ class SaleOrder(models.Model):
         state: [('readonly', False)]
         for state in {'sale', 'done', 'cancel'}
     }
-    date_order = fields.Datetime(string="Order Date",states=CUSTOM_FIELD_STATES,copy=False, track_visibility="onchange")
+    date_order = fields.Datetime(string="Order Date",states=CUSTOM_FIELD_STATES,copy=False,  tracking=True)
     p_o_ref = fields.Char(string='Custom PO Reference')
-    custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson.', tracking=2)
+    custom_salesperson_id = fields.Many2one('custom.salesperson',string='Custom Salesperson.',  tracking=True)
     # logistic_duration_id =  fields.Many2one('customer.logistic.timing',string='Logistic Timing',related='partner_id.customer_logistic_id',tracking=2,copy=False)
-    customer_category_id =  fields.Many2one('customer.catgeory',string='Customer Category',related='partner_id.customer_category_id',tracking=2,copy=False)
-    customer_remarks =  fields.Text(string='Customer Remarks',related='partner_id.cus_remarks', tracking=2,copy=False)
+    customer_category_id =  fields.Many2one('customer.catgeory',string='Customer Category',related='partner_id.customer_category_id', tracking=True,copy=False)
+    customer_remarks =  fields.Text(string='Customer Remarks',related='partner_id.cus_remarks', tracking=True,copy=False)
     is_accessed_sp = fields.Boolean(string="Is accessed salesperson", onchange='_onchange_accessed_salesperson')
     is_non_accessed_sp = fields.Boolean(string="Is Non custom salesperson", compute='_compute_non_salesperson', default=False)
 
@@ -105,15 +105,4 @@ class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
     prod_boxes = fields.Text(related='move_id.prod_boxes',string='Boxes')
-
-
-class SaleAdvancePaymentInv(models.TransientModel):
-    _inherit = "sale.advance.payment.inv"
-
-    def create_invoices(self):
-        sale_orders = self.env['sale.order'].browse(self._context.get('active_ids', []))
-        for order in sale_orders:
-            if order.is_accessed_sp and not order.is_non_accessed_sp:
-                raise UserError("You are not allowed to create the Invoice. Please contact system admin.")
-        invoice = super(SaleAdvancePaymentInv, self).create_invoices()
-        return invoice
+    
