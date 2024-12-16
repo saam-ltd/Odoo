@@ -1,5 +1,5 @@
 {
-    'name': 'Samm Extension',
+    'name': 'Samm Extension - odoo',
     'version': '15.0.1',
     'category': '',
     'summary': 'Saam Extension',
