@@ -10,7 +10,7 @@
         <field name="arch" type="xml">
             <field name="vat" position="after">
                 <field name="brn"/>
-                <field name="custom_salesperson_id" attrs="{'invisible': [('is_cus', '=',False)]}"/>
+                <field name="custom_salesperson_id"/> <!-- attrs="{'invisible': [('is_cus', '=',False)]}" -->
                 <field name="gl_code"/>
                 <field name="is_cus" invisible="1"/>
                 <field name="customer_category_id" attrs="{'invisible': [('is_cus', '=',False)]}"/>
