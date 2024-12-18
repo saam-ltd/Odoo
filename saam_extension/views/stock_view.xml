@@ -12,6 +12,7 @@
             </button>
 
             <xpath expr="//div[@name='button_box']" position="after">
+                <widget name="web_ribbon" text="Not Scheduled" bg_color="bg-danger" attrs="{'invisible': [('del_schedule_status', '!=','not_scheduled')]}"/>
                <widget name="web_ribbon" text="Scheduled" bg_color="bg-success" attrs="{'invisible': [('del_schedule_status', '!=','scheduled')]}"/>
                <widget name="web_ribbon" text="Re-Scheduled" bg_color="bg-success" attrs="{'invisible': [('del_schedule_status', '!=','re_scheduled')]}"/>
                <widget name="web_ribbon" text="Scanned" bg_color="bg-success" attrs="{'invisible': [('del_schedule_status', '!=','scanned')]}"/>

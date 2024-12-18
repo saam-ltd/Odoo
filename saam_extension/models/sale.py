@@ -92,6 +92,13 @@ class StockMove(models.Model):
 
     prod_boxes = fields.Text(string='Boxes')
 
+    def _get_new_picking_values(self):
+        res = super(StockMove, self)._get_new_picking_values()
+        res.update({
+            'del_schedule_status': 'scheduled' if self.group_id.sale_id and self.group_id.sale_id.commitment_date else 'not_scheduled',
+            })
+        return res
+
 
 class StockRule(models.Model):
     _inherit = 'stock.rule'
