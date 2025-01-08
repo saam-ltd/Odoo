@@ -25,6 +25,7 @@ class Picking(models.Model):
     customer_remarks =  fields.Text(string='Customer Remarks',related='partner_id.cus_remarks',  tracking=True,copy=False)
 
     is_date_updated = fields.Boolean(string='Is Date Updated')
+    code = fields.Selection(related='picking_type_id.code', string='Picking Type - Code', store=True)
 
 
 

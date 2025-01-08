@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-
-    <!-- Sale View Inherit -->
-    <record id="view_sale_form_inherit" model="ir.ui.view">
-        <field name="name">sale.form.view.inherit</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
-        <field name="arch" type="xml">
-            <field name="payment_term_id" position="after">
-                <field name="p_o_ref" readonly="state in ('sale','done','cancel')"/>
-                <!-- <field name="logistic_duration_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" readonly="1"/> -->
-                <field name="customer_category_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" readonly="1"/>
-                <field name="customer_remarks" readonly="1"/>
-            </field>
-            <field name="user_id" position="after">
-                <field name="custom_salesperson_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" readonly="state in ('sale','done','cancel')"/>
-                <field name="is_accessed_sp" invisible="1"/>
-                <field name="is_non_accessed_sp" invisible="1"/>
+        <record id="view_sale_form_inherit" model="ir.ui.view">
+            <field name="name">sale.form.view.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="payment_term_id" position="after">
+                    <field name="p_o_ref" readonly="state in ('sale','done','cancel')"/>
+                    <!-- <field name="logistic_duration_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" readonly="1"/> -->
+                    <field name="customer_category_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" readonly="1"/>
+                    <field name="customer_remarks" readonly="1"/>
+                </field>
+                <field name="user_id" position="after">
+                    <field name="custom_salesperson_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}" readonly="state in ('sale','done','cancel')"/>
+                    <field name="is_accessed_sp" invisible="1"/>
+                    <field name="is_non_accessed_sp" invisible="1"/>
             </field>
             <xpath expr="//notebook/page[1]/field/list/field[@name='name']" position="after">
                 <field name="prod_boxes" readonly="state in ('sale','done','cancel')" string="Orders"/>
@@ -84,4 +82,5 @@
             </field>
         </field>
     </record> -->
+
 </odoo>
