@@ -18,7 +18,7 @@
                                 <div class="col-6" name="div_outgoing_address">
                                     <div t-if="o.should_print_delivery_address()">
                                         <span><strong>DELIVERY ADDRESS:</strong></span>
-                                        <div t-field="o.move_lines[0].partner_id"
+                                        <div t-field="o.move_ids[0].partner_id"
                                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
                                         <t t-if="o.partner_id.mobile"><b>MOBILE:</b>
                                             <span t-field="o.partner_id.mobile"/><br/></t>
@@ -57,17 +57,15 @@
                             <br/>
                             <!-- <h1 t-field="o.name" class="mt0 float-left"/> -->
                             <strong>GRN NO: </strong> <span t-field="o.name"/>
-                            <div class="row mt48 mb32">
-                                <div t-if="o.origin" class="col-auto" name="div_origin">
+                            <div class="oe_structure"></div>
+                            <div id="informations" class="row mb-4">
+                                <div class="col-4 text-start" name="div_origin">
                                     <strong>PURCHASE ORDER NO: </strong><span t-field="o.origin"/>
                                 </div>
-                               <!--  <div class="col-auto" name="div_state">
-                                    <strong>STATUS: </strong><span t-field="o.state"/>
-                                </div> -->
-                                <div class="col-auto" name="div_sched_date">
+                                <div name="div_sched_date">
                                     <strong>DATE: </strong><span t-field="o.scheduled_date" t-options='{"widget": "date"}'/>
                                 </div>
-                                <div t-if="o.user_id.name" class="col-auto" name="div_salesman" >
+                                <div class="col-4 text-end" name="div_salesman" >
                                     <strong>RESPONSIBLE: </strong>
                                     <span t-field="o.user_id.name"/>
                                 </div>
@@ -115,7 +113,7 @@
                                                 <!-- <span t-field="ml.product_id.description_picking"/> -->
                                             </td>
                                             <td>
-                                                <span t-if="o.state != 'done'" t-field="ml.product_uom_qty" t-options='{"widget": "float", "precision": 2}'/>
+                                                <span t-if="o.state != 'done'" t-field="ml.quantity" t-options='{"widget": "float", "precision": 2}'/>
                                                 <span t-if="o.state == 'done'" t-field="ml.qty_done" t-options='{"widget": "float", "precision": 2}'/>
                                                 <span t-field="ml.product_uom_id" groups="uom.group_uom"/>
                                             </td>
@@ -172,10 +170,10 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <t t-set="no_reserved_product" t-value="o.move_lines.filtered(lambda x: x.product_uom_qty != x.reserved_availability and x.move_line_ids and x.state!='done')"/>
+                            <!-- <t t-set="no_reserved_product" t-value="o.move_ids.filtered(lambda x: x.product_uom_qty != x.reserved_availability and x.move_line_ids and x.state!='done')"/>
                             <p t-if="o.state in ['draft', 'waiting', 'confirmed'] or no_reserved_product"><i class="fa fa-exclamation-triangle" />
                                 All products could not be reserved. Click on the "Check Availability" button to try to reserve products.
-                            </p>
+                            </p> -->
                             <strong>Remarks / Notes:</strong>
                             <span t-field="doc.note" />
                             <!-- <p t-field="o.note"/> -->
@@ -222,16 +220,17 @@
                             <b><span t-esc="o.company_id.vat"/></b><br/>
                         </t>
                         <t t-if="o.company_id.brn"><b>BRN:</b>
-                            <b><span t-esc="o.company_id.brn"/></b><br/>
+                            <b><span t-esc="o.company_id.brn"/></b>
                         </t>
                     </div>
                     <div class="col-1">
                     </div>
                     <div class="col-6">
-                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="max-height:200px; max-width:250px;"/>
+                        <!-- <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="max-height:200px; max-width:250px;"/> -->
+                        <img t-if="company.logo" class="o_company_logo_big" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
                     </div>
-
                 </div>
+                <br/>
                 <div t-if="company.logo or company.report_header" class="row zero_min_height">
                     <div class="col-12">
                         <div style="border-bottom: 1px solid black;"/>

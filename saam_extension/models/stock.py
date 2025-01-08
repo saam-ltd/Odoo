@@ -46,7 +46,7 @@ class Picking(models.Model):
         for picking in self:
             # if picking.state in ('done', 'cancel'):
             #     raise UserError(_("You cannot change the Scheduled Date on a done or cancelled transfer."))
-            picking.move_lines.write({'date': picking.scheduled_date})
+            picking.move_ids.write({'date': picking.scheduled_date})
             if picking.picking_type_id.code == 'outgoing':
                 if picking.state == 'assigned':
                     if picking.del_schedule_status == 'not_scheduled':
@@ -70,10 +70,10 @@ class Picking(models.Model):
         """
         self._check_company()
 
-        todo_moves = self.mapped('move_lines').filtered(lambda self: self.state in ['draft', 'waiting', 'partially_available', 'assigned', 'confirmed'])
+        todo_moves = self.mapped('move_ids').filtered(lambda self: self.state in ['draft', 'waiting', 'partially_available', 'assigned', 'confirmed'])
         for picking in self:
             if picking.owner_id:
-                picking.move_lines.write({'restrict_partner_id': picking.owner_id.id})
+                picking.move_ids.write({'restrict_partner_id': picking.owner_id.id})
                 picking.move_line_ids.write({'owner_id': picking.owner_id.id})
         todo_moves._action_done(cancel_backorder=self.env.context.get('cancel_backorder'))
         self.write({'date_done': fields.Datetime.now(), 'priority': '0'})
@@ -82,7 +82,7 @@ class Picking(models.Model):
             self.write({'del_schedule_status':'done'})
 
         # if incoming moves make other confirmed/partially_available moves available, assign them
-        done_incoming_moves = self.filtered(lambda p: p.picking_type_id.code == 'incoming').move_lines.filtered(lambda m: m.state == 'done')
+        done_incoming_moves = self.filtered(lambda p: p.picking_type_id.code == 'incoming').move_ids.filtered(lambda m: m.state == 'done')
         done_incoming_moves._trigger_assign()
 
         self._send_confirmation_email()
@@ -99,11 +99,11 @@ class Picking(models.Model):
         backorders = self.env['stock.picking']
         bo_to_assign = self.env['stock.picking']
         for picking in self:
-            moves_to_backorder = picking.move_lines.filtered(lambda x: x.state not in ('done', 'cancel'))
+            moves_to_backorder = picking.move_ids.filtered(lambda x: x.state not in ('done', 'cancel'))
             if moves_to_backorder:
                 backorder_picking = picking.copy({
                     'name': '/',
-                    'move_lines': [],
+                    'move_ids': [],
                     'move_line_ids': [],
                     'backorder_id': picking.id,
                     'p_o_ref':picking.p_o_ref,

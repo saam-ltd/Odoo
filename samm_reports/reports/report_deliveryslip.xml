@@ -4,7 +4,7 @@
         <t t-call="web.html_container">
             <t t-call="samm_reports.samm_delivery_slip_external_layout_header">
                     <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
-                    <t t-set="partner" t-value="o.partner_id or (o.move_lines and o.move_lines[0].partner_id) or False"/>
+                    <t t-set="partner" t-value="o.partner_id or (o.move_ids and o.move_ids[0].partner_id) or False"/>
                     <div class="page">
                         <h3><strong style="font-size:26px;">DELIVERY NOTE</strong></h3><br/>
                     
@@ -58,25 +58,22 @@
                                 <span t-field="o.name"/>
                             </h2> -->
                             <strong>DELIVERY NOTE NO:</strong> <span t-field="o.name"/>
-                            <div class="row mt32 mb32">
-                                <div t-if="o.name" class="col-auto" name="div_origin">
-                                    <strong>SOURCE:</strong> <span t-field="o.origin"/>
+                            <div class="oe_structure"></div>
+                            <div id="informations" class="row mb-4">
+                                <div class="col-4 text-start">
+                                    <strong>SOURCE:</strong> <span t-field="o.origin">S0001</span>
                                 </div>
-                                <div t-if="o.state" class="col-auto" name="div_sched_date">
+                                <div t-if="o.state" class="col-4 text-center">
                                     <strong>DATE:</strong>
                                     <t t-if="o.state == 'done'">
-                                        <!-- <span t-field="o.date_done" t-options='{"widget": "date"}'/> -->
                                         <span t-esc="(o.date_done + relativedelta(hours=5, minutes=30))" t-options='{"widget": "date"}'/>
                                     </t>
                                     <t t-if="o.state != 'done'">
-                                        <!-- <span t-field="o.scheduled_date" t-options='{"widget": "date"}'/> -->
                                         <span t-esc="(o.scheduled_date + relativedelta(hours=5, minutes=30))" t-options='{"widget": "date"}'/>
-                                   </t>
+                                    </t>
                                 </div>
-                                <div class="col-auto" name="div_salesman" >
-                                    <strong>SALESMAN:</strong>
-                                    <!-- <span t-field="o.user_id.name"/> -->
-                                    <span t-field="o.custom_salesperson_id.name"/>
+                                <div class="col-4 text-end">
+                                    <strong>SALESMAN:</strong> <span t-field="o.custom_salesperson_id.name"/>
                                 </div>
                             </div>
                             <br/>
@@ -91,7 +88,7 @@
                                     </tr>
                                 </thead>
                                 <tbody style="line-height:20px;">
-                                    <t t-set="lines" t-value="o.move_lines.filtered(lambda x: x.product_uom_qty)"/>
+                                    <t t-set="lines" t-value="o.move_ids.filtered(lambda x: x.product_uom_qty)"/>
                                     <tr t-foreach="lines" t-as="move">
                                         <td t-if="move.product_id.default_code">
                                             <span t-esc="move.product_id.default_code"/>
@@ -105,11 +102,11 @@
                                         </td>
                                         <td>
                                             <span t-field="move.product_uom_qty"/>
-                                            <span t-field="move.product_uom"/>
+                                            <span t-field="move.product_uom.name"/>
                                         </td>
                                         <td>
-                                            <span t-field="move.quantity_done"/>
-                                            <span t-field="move.product_uom"/>
+                                            <span t-field="move.quantity"/>
+                                            <span t-field="move.product_uom.name"/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -157,12 +154,12 @@
                                             </t>
                                         </t>
                                         <!-- Make sure we do another section for package-less products if they exist -->
-                                        <t t-set="move_lines" t-value="o.move_line_ids.filtered(lambda l: not l.result_package_id)"/>
+                                        <t t-set="move_idss" t-value="o.move_line_ids.filtered(lambda l: not l.result_package_id)"/>
                                         <t t-set="aggregated_lines" t-value="o.move_line_ids._get_aggregated_product_quantities(except_package=True)"/>
-                                        <t t-if="move_lines or aggregated_lines" name="no_package_move_lines">
+                                        <t t-if="move_ids or aggregated_lines" name="no_package_move_lines">
                                             <t t-call="stock.stock_report_delivery_no_package_section_line" name="no_package_section"/>
                                             <t t-if="has_serial_number">
-                                                <tr t-foreach="move_lines" t-as="move_line">
+                                                <tr t-foreach="move_ids" t-as="move_line">
                                                     <t t-call="stock.stock_report_delivery_has_serial_move_line"/>
                                                 </tr>
                                             </t>
@@ -206,7 +203,7 @@
                                     </thead>
                                     <tbody style="line-height:20px;">
                                         <t t-foreach="backorders" t-as="backorder">
-                                            <t t-set="bo_lines" t-value="backorder.move_lines.filtered(lambda x: x.product_uom_qty)"/>
+                                            <t t-set="bo_lines" t-value="backorder.move_ids.filtered(lambda x: x.product_uom_qty)"/>
                                             <tr t-foreach="bo_lines" t-as="bo_line">
                                                 <td>
                                                     <span t-if="bo_line.product_id.default_code" t-esc="bo_line.product_id.default_code"/>
@@ -220,7 +217,7 @@
                                                 <td/>
                                                 <td class="text-center w-auto">
                                                     <span t-field="bo_line.product_uom_qty"/>
-                                                    <span t-field="bo_line.product_uom"/>
+                                                    <span t-field="bo_line.product_uom.name"/>
                                                 </td>
                                             </tr>
                                         </t>
@@ -242,6 +239,7 @@
                             <div>
                                 <strong>Remarks / Notes:</strong>
                                 <span t-field="o.note" />
+                                <br/>
                                 <br/>
                                 <br/>
                                 <div class="row">
@@ -297,16 +295,17 @@
                         <b><span t-esc="o.company_id.vat"/></b><br/>
                     </t>
                     <t t-if="o.company_id.brn"><b>BRN:</b>
-                        <b><span t-esc="o.company_id.brn"/></b><br/>
+                        <b><span t-esc="o.company_id.brn"/></b>
                     </t>
                 </div>
                 <div class="col-1">
                 </div>
                 <div class="col-6">
-                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="max-height:200px; max-width:250px;"/>
+                    <!-- <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="max-height:200px; max-width:250px;"/> -->
+                    <img t-if="company.logo" class="o_company_logo_big" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
                 </div>
-
             </div>
+            <br/>
             <div t-if="company.logo or company.report_header" class="row zero_min_height">
                 <div class="col-12">
                     <div style="border-bottom: 1px solid black;"/>
@@ -366,13 +365,13 @@
             <td class="text-center" name="move_line_aggregated_qty_ordered">
                 <!-- <span t-esc="int(aggregated_lines[line]['qty_ordered'])"/> -->
                 <span t-esc="'%.2f' % aggregated_lines[line]['qty_ordered']"/>
-                <span t-esc="aggregated_lines[line]['product_uom']"/>
+                <span t-esc="aggregated_lines[line]['product_uom']['name']"/>
             </td>
-            <td class="text-center" name="move_line_aggregated_qty_done">
-                <t t-if="aggregated_lines[line]['qty_done']">
+            <td class="text-center" name="move_line_aggregated_quantity">
+                <t t-if="aggregated_lines[line]['quantity']">
                     <!-- <span t-esc="int(aggregated_lines[line]['qty_done']) " /> -->
-                    <span t-esc="'%.2f' % aggregated_lines[line]['qty_done']"/>
-                    <span t-esc="aggregated_lines[line]['product_uom']"/>
+                    <span t-esc="'%.2f' % aggregated_lines[line]['quantity']"/>
+                    <span t-esc="aggregated_lines[line]['product_uom']['name']"/>
                 </t>
             </td>
         </tr>

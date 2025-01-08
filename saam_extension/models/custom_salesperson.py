@@ -6,7 +6,7 @@ from odoo.exceptions import UserError, AccessError,ValidationError
 class CustomSalesperson(models.Model):
 	_name = 'custom.salesperson'
 	_description ='Custom Salesperson'
-	_inherit = ['portal.mixin','mail.thread', 'mail.activity.mixin']
+	_inherit = ['mail.thread', 'mail.activity.mixin', 'image.mixin']
 	_order = 'id desc'
 
 	name = fields.Char(string='Salesperson',  tracking=True)

@@ -45,20 +45,20 @@
                         <strong>ORDER REFERENCE: </strong><span t-field="o.name"/>
                     </div>
                 </div>
-                <div class="row mt32 mb32" id="informations">
-                    <div t-if="o.user_id" class="col-auto col-3 mw-100 mb-2">
+                <div id="informations" class="row mb-4">
+                    <div class="col-4 text-start">
                         <strong>REPRESENTATIVE: </strong><span t-field="o.user_id"/>
                     </div>
-                    <div t-if="o.partner_ref" class="col-auto col-3 mw-100 mb-2">
+                    <div class="col-4 text-center">
                         <strong>YOUR ORDER REFERENCE: </strong><span t-field="o.partner_ref"/>
                     </div>
-                    <div t-if="o.payment_term_id" class="col-auto col-3 mw-100 mb-2">
+                    <div class="col-4 text-end">
                         <strong>PAYMENT TERMS: </strong><span t-field="o.payment_term_id.name"/>
                     </div>
                 </div>
                 <br/>
                 <br/>
-                <table class="table table-sm o_main_table">
+                <table class="o_has_total_table table o_main_table table-border">
                     <thead>
                         <tr>
                             <th name="th_sku" class="text-left">SKU</th>
@@ -132,11 +132,13 @@
                     </tbody>
                 </table>
 
-                <div id="total" class="row justify-content-end">
+                <div id="total" class="row justify-content-end mt-n3">
                     <div class="col-4">
-                        <table class="table table-sm">
-                            <t t-set="tax_totals" t-value="json.loads(o.tax_totals_json)"/>
-                            <t t-call="account.document_tax_totals"/>
+                        <table class="o_total_table table table-border">
+                            <t t-call="purchase.document_tax_totals">
+                                <t t-set="tax_totals" t-value="o.tax_totals"/>
+                                <t t-set="currency" t-value="o.currency_id"/>
+                            </t>
                         </table>
                     </div>
                 </div>
@@ -150,79 +152,78 @@
     </t>
 </template>
 
-<template id="purchase_external_layout_common_header">
-    <div class="header" style= "font-size:14px">
-        <t t-if="o and 'company_id' in o">
-            <t t-set="company" t-value="o.company_id"/>
-        </t>
-        <t t-if="not o or not 'company_id' in o">
-            <t t-set="company" t-value="res_company"/>
-        </t>
-        <div class="row">
-            <div class="col-4" style="font-size:14px;" align="text-right">
-            <b><span  t-esc="o.company_id.name"/></b><br/>
-            <t t-if="o.company_id.street"><br/>
-                <b><span t-esc="o.company_id.street"/>,</b> 
+    <template id="purchase_external_layout_common_header">
+        <div class="header" style= "font-size:14px">
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"/>
             </t>
-            <t t-if="o.company_id.street2">
-                <b><span t-esc="o.company_id.street2"/></b><br/>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"/>
             </t>
-            <b><span  t-esc="o.company_id.city"/></b>
-            <t t-if="o.company_id.state_id.name">
-                <b><span  t-esc="o.company_id.state_id.name"/></b>,
-            </t>
-            <t t-if="o.company_id.country_id.name">
-                <b><span t-esc="o.company_id.country_id.name"/></b><br/>
-            </t>
-            <t t-if="o.company_id.phone">
-                <b><span t-esc="o.company_id.phone"/></b><br/>
-            </t>
-            <t t-if="o.company_id.mobile">
-                <b><span t-esc="o.company_id.mobile"/></b><br/>
-            </t>
-            <t t-if="o.company_id.email">
-                <b><span t-esc="o.company_id.email"/></b><br/>
-            </t>
-            <t t-if="o.company_id.vat"><b>VAT:</b>
-                <b><span t-esc="o.company_id.vat"/></b><br/>
-            </t>
-            <t t-if="o.company_id.brn"><b>BRN:</b>
-                <b><span t-esc="o.company_id.brn"/></b><br/>
-            </t>
-            </div>
-            <div class="col-1">
-            </div>
-            <div class="col-6">
-                <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="max-height:200px; max-width:250px;"/>
-            </div>
-
+            <div class="row">
+                <div class="col-4" style="font-size:14px;" align="text-right">
+                    <b><span  t-esc="o.company_id.name"/></b><br/>
+                    <t t-if="o.company_id.street"><br/>
+                        <b><span t-esc="o.company_id.street"/>,</b> 
+                    </t>
+                    <t t-if="o.company_id.street2">
+                        <b><span t-esc="o.company_id.street2"/></b><br/>
+                    </t>
+                    <b><span  t-esc="o.company_id.city"/></b>
+                    <t t-if="o.company_id.state_id.name">
+                        <b><span  t-esc="o.company_id.state_id.name"/></b>,
+                    </t>
+                    <t t-if="o.company_id.country_id.name">
+                        <b><span t-esc="o.company_id.country_id.name"/></b><br/>
+                    </t>
+                    <t t-if="o.company_id.phone">
+                        <b><span t-esc="o.company_id.phone"/></b><br/>
+                    </t>
+                    <t t-if="o.company_id.mobile">
+                        <b><span t-esc="o.company_id.mobile"/></b><br/>
+                    </t>
+                    <t t-if="o.company_id.email">
+                        <b><span t-esc="o.company_id.email"/></b><br/>
+                    </t>
+                    <t t-if="o.company_id.vat"><b>VAT:</b>
+                        <b><span t-esc="o.company_id.vat"/></b><br/>
+                    </t>
+                    <t t-if="o.company_id.brn"><b>BRN:</b>
+                        <b><span t-esc="o.company_id.brn"/></b>
+                    </t>
                 </div>
-                <div t-if="company.logo or company.report_header" class="row zero_min_height">
-                    <div class="col-12">
-                        <div style="border-bottom: 1px solid black;"/>
-                    </div>
+                <div class="col-1">
+                </div>
+                <div class="col-6">
+                    <!-- <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="max-height:200px; max-width:250px;"/> -->
+                    <img t-if="company.logo" class="o_company_logo_big" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
                 </div>
             </div>
-            <div class="footer" style= "border-top: 1px solid black;font-size:13px;height:15px;">
-                <div class="row">
-                    <div class="col-5"></div>
-                    <div class="col-7" align="text-center">
-                        Page <span class="page"/> of <span class="topage"/>
-                    </div>
+            <br/>
+            <div t-if="company.logo or company.report_header" class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
                 </div>
             </div>
-            <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
-                <t t-raw="0" />
+        </div>
+        <div class="footer" style= "border-top: 1px solid black;font-size:13px;height:15px;">
+            <div class="row">
+                <div class="col-5"></div>
+                <div class="col-7" align="text-center">
+                    Page <span class="page"/> of <span class="topage"/>
+                </div>
             </div>
+        </div>
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
+            <t t-raw="0" />
+        </div>
     </template>
 
-
-
-<template id="report_purchaseorder_inherit">
-    <t t-call="web.html_container">
-        <t t-foreach="docs" t-as="o">
-            <t t-call="samm_reports.report_purchaseorder_document_inherit" t-lang="o.partner_id.lang"/>
+    <template id="report_purchaseorder_inherit">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="samm_reports.report_purchaseorder_document_inherit" t-lang="o.partner_id.lang"/>
+            </t>
         </t>
-    </t>
-</template>
+    </template>
 </odoo>

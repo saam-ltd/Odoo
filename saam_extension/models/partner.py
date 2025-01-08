@@ -16,11 +16,11 @@ class ResPartner(models.Model):
 
 class CustomerCategory(models.Model):
 	_name = 'customer.catgeory' 
-	_inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'utm.mixin']
+	_inherit = ['mail.thread', 'mail.activity.mixin', 'image.mixin']
 	_description = "Customer Category"
 
-	name = fields.Char(string='Name',copy=False,required=True)
-	company_id = fields.Many2one('res.company', 'Company', required=True, index=True, default=lambda self: self.env.company)
+	name = fields.Char(string='Name',copy=False,required=True, tracking=True)
+	company_id = fields.Many2one('res.company', 'Company', required=True, index=True, default=lambda self: self.env.company, tracking=True)
 
 	
 

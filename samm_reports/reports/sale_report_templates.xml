@@ -61,25 +61,16 @@
                     <strong>ORDER REFERENCE: </strong><span t-field="doc.name"/>
                 </div>
             </div>
-            
-
-            <div class="row mt32 mb32" id="informations">
-                <div t-if="doc.client_order_ref" class="col-auto col-3 mw-100 mb-2">
+            <div id="informations" class="row mb-4">
+                <div class="col-4 text-start">
                     <strong>YOUR REFERENCE: </strong>
                     <span t-field="doc.client_order_ref"/>
                 </div>
-                
-                
-                <!-- <div t-if="doc.validity_date and doc.state in ['draft', 'sent']" class="col-auto col-3 mw-100 mb-2" name="expiration_date">
-                    <strong>EXPIRATION:</strong>
-                    <span t-field="doc.validity_date"/>
-                </div> -->
-                <div class="col-auto col-3 mw-100 mb-2">
+                <div class="col-4 text-center">
                     <strong>SALESMAN: </strong>
-                    <!-- <span t-field="doc.user_id.name"/> -->
                     <span t-field="doc.custom_salesperson_id.name"/>
                 </div>
-                <div t-if="doc.payment_term_id.name" class="col-auto col-3 mw-100 mb-2">
+                <div class="col-4 text-end">
                     <strong>PAYMENT TERMS: </strong>
                     <span t-field="doc.payment_term_id.name"/>
                 </div>
@@ -88,7 +79,7 @@
             <!-- Is there a discount on at least one line? -->
             <t t-set="display_discount" t-value="any(l.discount for l in doc.order_line)"/>
 
-            <table class="table table-sm o_main_table">
+            <table class="o_has_total_table table o_main_table table-border">
                 <!-- In case we want to repeat the header, remove "display: table-row-group" -->
                 <thead style="display: table-row-group">
                     <tr>
@@ -101,9 +92,12 @@
                         </th>
                         <th name="th_taxes" class="text-center">VAT</th>
                         <th name="th_subtotal" class="text-right">
+                            <span>Amount</span>
+                        </th>
+                        <!-- <th name="th_subtotal" class="text-right">
                             <span groups="account.group_show_line_subtotals_tax_excluded">AMOUNT</span>
                             <span groups="account.group_show_line_subtotals_tax_included">TOTAL PRICE</span>
-                        </th>
+                        </th> -->
                     </tr>
                 </thead>
                 <tbody class="sale_tbody">
@@ -132,33 +126,41 @@
                                 <td name="td_taxes" class="text-center">
                                     <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
                                 </td>
-                                <td name="td_subtotal" class="text-right o_price_total">
-                                    <span t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
-                                    <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                <td t-if="not line.is_downpayment" name="td_subtotal" class="text-end o_price_total">
+                                    <span t-field="line.price_subtotal">27.00</span>
                                 </td>
                             </t>
-                            <t t-if="line.display_type == 'line_section'">
+                            <t t-elif="line.display_type == 'line_section' or line.product_type == 'combo'">
                                 <td name="td_section_line" colspan="99">
-                                    <span t-field="line.name"/>
+                                    <span t-field="line.name">A section title</span>
                                 </td>
                                 <t t-set="current_section" t-value="line"/>
                                 <t t-set="current_subtotal" t-value="0"/>
                             </t>
-                            <t t-if="line.display_type == 'line_note'">
+                            <t t-elif="line.display_type == 'line_note'">
                                 <td name="td_note_line" colspan="99">
-                                    <span t-field="line.name"/>
+                                    <span t-field="line.name">A note, whose content usually applies to the section or product above.</span>
                                 </td>
                             </t>
                         </tr>
 
-                        <t t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section')">
-                            <tr class="is-subtotal text-right">
+                        <t t-if="current_section and (
+                                line_last
+                                or lines_to_report[line_index+1].display_type == 'line_section'
+                                or lines_to_report[line_index+1].product_type == 'combo'
+                                or (
+                                    line.combo_item_id
+                                    and not lines_to_report[line_index+1].combo_item_id
+                                )
+                            ) and not line.is_downpayment">
+                            <t t-set="current_section" t-value="None"/>
+                            <tr class="is-subtotal text-end">
                                 <td name="td_section_subtotal" colspan="99">
                                     <strong class="mr16">SUBTOTAL</strong>
                                     <span
-                                        t-esc="current_subtotal"
-                                        t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
-                                    />
+                                        t-out="current_subtotal"
+                                        t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                    >31.05</span>
                                 </td>
                             </tr>
                         </t>
@@ -167,12 +169,14 @@
             </table>
 
             <div class="clearfix" name="so_total_summary">
-                <div id="total" class="row" name="total">
-                    <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ml-auto">
-                        <table class="table table-sm">
+                <div id="total" class="row mt-n3" name="total">
+                    <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
+                        <table class="o_total_table table table-border">
                             <!-- Tax totals -->
-                            <t t-set="tax_totals" t-value="json.loads(doc.tax_totals_json)"/>
-                            <t t-call="account.document_tax_totals"/>
+                            <t t-call="sale.document_tax_totals">
+                                <t t-set="tax_totals" t-value="doc.tax_totals"/>
+                                <t t-set="currency" t-value="doc.currency_id"/>
+                            </t>
                         </table>
                     </div>
                 </div>
@@ -208,71 +212,72 @@
         </template>
 
 
-<template id="sale_external_layout_common_header">
-    <div class="header" style= "font-size:14px">
-        <t t-if="doc and 'company_id' in doc">
-            <t t-set="company" t-value="doc.company_id"/>
-        </t>
-        <t t-if="not o or not 'company_id' in o">
-            <t t-set="company" t-value="res_company"/>
-        </t>
-        <div class="row">
-            <div class="col-4" style="font-size:14px;" align="text-right">
-            <b><span  t-esc="doc.company_id.name"/></b><br/>
-            <t t-if="doc.company_id.street"><br/>
-                <b><span t-esc="doc.company_id.street"/>,</b> 
+    <template id="sale_external_layout_common_header">
+        <div class="header" style= "font-size:14px">
+            <t t-if="doc and 'company_id' in doc">
+                <t t-set="company" t-value="doc.company_id"/>
             </t>
-            <t t-if="doc.company_id.street2">
-                <b><span t-esc="doc.company_id.street2"/></b><br/>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"/>
             </t>
-            <b><span  t-esc="doc.company_id.city"/></b>
-            <t t-if="doc.company_id.state_id.name">
-                <b><span  t-esc="doc.company_id.state_id.name"/></b>,
-            </t>
-            <t t-if="doc.company_id.country_id.name">
-                <b><span t-esc="doc.company_id.country_id.name"/></b><br/>
-            </t>
-            <t t-if="doc.company_id.phone">
-                <b><span t-esc="doc.company_id.phone"/></b><br/>
-            </t>
-            <t t-if="doc.company_id.mobile">
-                <b><span t-esc="doc.company_id.mobile"/></b><br/>
-            </t>
-            <t t-if="doc.company_id.email">
-                <b><span t-esc="doc.company_id.email"/></b><br/>
-            </t>
-            <t t-if="doc.company_id.vat"><b>VAT:</b>
-                <b><span t-esc="doc.company_id.vat"/></b><br/>
-            </t>
-            <t t-if="doc.company_id.brn"><b>BRN:</b>
-                <b><span t-esc="doc.company_id.brn"/></b><br/>
-            </t>
-            </div>
-            <div class="col-1">
-            </div>
-            <div class="col-6">
-                <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="max-height:200px; max-width:250px;"/>
-            </div>
-
+            <div class="row">
+                <div class="col-4" style="font-size:14px;" align="text-right">
+                <b><span  t-esc="doc.company_id.name"/></b><br/>
+                <t t-if="doc.company_id.street"><br/>
+                    <b><span t-esc="doc.company_id.street"/>,</b> 
+                </t>
+                <t t-if="doc.company_id.street2">
+                    <b><span t-esc="doc.company_id.street2"/></b><br/>
+                </t>
+                <b><span  t-esc="doc.company_id.city"/></b>
+                <t t-if="doc.company_id.state_id.name">
+                    <b><span  t-esc="doc.company_id.state_id.name"/></b>,
+                </t>
+                <t t-if="doc.company_id.country_id.name">
+                    <b><span t-esc="doc.company_id.country_id.name"/></b><br/>
+                </t>
+                <t t-if="doc.company_id.phone">
+                    <b><span t-esc="doc.company_id.phone"/></b><br/>
+                </t>
+                <t t-if="doc.company_id.mobile">
+                    <b><span t-esc="doc.company_id.mobile"/></b><br/>
+                </t>
+                <t t-if="doc.company_id.email">
+                    <b><span t-esc="doc.company_id.email"/></b><br/>
+                </t>
+                <t t-if="doc.company_id.vat"><b>VAT:</b>
+                    <b><span t-esc="doc.company_id.vat"/></b><br/>
+                </t>
+                <t t-if="doc.company_id.brn"><b>BRN:</b>
+                    <b><span t-esc="doc.company_id.brn"/></b>
+                </t>
                 </div>
-                <div t-if="company.logo or company.report_header" class="row zero_min_height">
-                    <div class="col-12">
-                        <div style="border-bottom: 1px solid black;"/>
-                    </div>
+                <div class="col-1">
+                </div>
+                <div class="col-6">
+                    <!-- <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="max-height:200px; max-width:250px;"/> -->
+                    <img t-if="company.logo" class="o_company_logo_big" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
                 </div>
             </div>
-            <div class="footer" style= "border-top: 1px solid black;font-size:13px;height:15px;">
-                <div class="row">
-                    <div class="col-5"></div>
-                    <div class="col-7" align="text-center">
-                        Page <span class="page"/> of <span class="topage"/>
-                    </div>
+            <br/>
+            <div t-if="company.logo or company.report_header" class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
                 </div>
             </div>
-            <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
-                <t t-raw="0" />
+        </div>
+        <div class="footer" style= "border-top: 1px solid black;font-size:13px;height:15px;">
+            <div class="row">
+                <div class="col-5"></div>
+                <div class="col-7" align="text-center">
+                    Page <span class="page"/> of <span class="topage"/>
+                </div>
             </div>
-        </template>
+        </div>
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
+            <t t-raw="0" />
+        </div>
+    </template>
 
 
 <template id="report_saleorder_document_inherit">

@@ -20,10 +20,8 @@
                         </group>
                     </group>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
-                </div>
+                <!-- Chatter -->
+                <chatter/>
             </form>
         </field>
     </record>
