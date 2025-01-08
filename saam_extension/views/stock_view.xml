@@ -78,8 +78,7 @@
                 <field name="scheduled_date"/>
             </xpath>
              <xpath expr="//field[@name='state']" position="after">
-                <field name="code" column_invisible="1"/>
-                <field name="del_schedule_status" attrs="{'invisible': [('code', '!=','outgoing')]}" widget="badge" decoration-success="del_schedule_status in ('scheduled','re_scheduled')" decoration-danger="del_schedule_status == 'not_scheduled'" decoration-info="del_schedule_status == 'scanned'"/>
+                <field name="del_schedule_status"  widget="badge" decoration-success="del_schedule_status in ('scheduled','re_scheduled')" decoration-danger="del_schedule_status == 'not_scheduled'" decoration-info="del_schedule_status == 'scanned'"/>
             </xpath>
         </field>
     </record>
